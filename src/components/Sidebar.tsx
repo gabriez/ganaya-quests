@@ -1,0 +1,79 @@
+"use client";
+import { Stars } from "@/icons/Stars";
+import { usePathname } from "next/navigation";
+import { ItemSidebar } from "./ItemSidebar";
+import { Logout } from "./Logout";
+import { PUBLIC_LINKS } from "@/constants";
+
+export const Sidebar = ({
+	open,
+	onToggle,
+}: {
+	open: boolean;
+	onToggle: () => void;
+}) => {
+	const pathname = usePathname();
+
+	return (
+		<aside
+			className={
+				"hidden sticky md:grid left-0 top-0 pt-20 pb-6 grid-cols-1 grid-rows-[auto_1fr_auto] bg-surface-container min-h-dvh transition-all duration-300 " +
+				(open ? "w-64" : "w-20")
+			}>
+			{/* Toggle button — positioned on the right edge */}
+			<button
+				onClick={onToggle}
+				className={
+					"absolute hover:cursor-pointer z-10 left-[100%] bg-surface-container border-r border-b  block border-outline-variant rounded-r-full pr-1 pt-2 pb-2 hover:bg-surface-container-high transition-colors top-[65px] "
+				}
+				aria-label={open ? "Contraer menú" : "Expandir menú"}>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 -960 960 960"
+					height={26}
+					width={26}
+					fill="#BDC8D1"
+					className={
+						"transition-transform duration-300 " + (open ? "" : "rotate-180")
+					}>
+					<path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+				</svg>
+			</button>
+
+			{/* Username + icon */}
+			<div
+				className={
+					"flex items-center self-start pr-2 gap-3 " +
+					(open ? "pl-6" : "pl-5 justify-center")
+				}>
+				<div className="block p-2 bg-secondary-fixed-dim rounded-md flex-shrink-0">
+					<Stars height={32} width={32} />
+				</div>
+
+				<p
+					className={
+						"font-(--font-be-vietnam-pro) text-base font-medium text-secondary-fixed-dim whitespace-nowrap overflow-hidden transition-all duration-300 " +
+						(open ? "opacity-100 w-auto" : "opacity-0 w-0 invisible")
+					}>
+					Ala Del Billete
+				</p>
+			</div>
+
+			{/* Navigation */}
+			<nav className="mt-6 self-start">
+				<ul className="flex flex-col">
+					{PUBLIC_LINKS.map((link, i) => (
+						<ItemSidebar
+							{...link}
+							pathname={pathname}
+							key={link.path + i}
+							open={open}
+						/>
+					))}
+				</ul>
+			</nav>
+
+			<Logout logout={() => {}} open={open} />
+		</aside>
+	);
+};

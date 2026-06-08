@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import {
-	Be_Vietnam_Pro,
-	Plus_Jakarta_Sans,
-} from "next/font/google";
+import { Be_Vietnam_Pro, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { AuthContextProvider } from "@/context/AuthContext";
 
 const beVietnamPro = Be_Vietnam_Pro({
 	variable: "--font-be-vietnam-pro",
@@ -45,7 +43,9 @@ export default function RootLayout({
 				/>
 			</head>
 			<body className="min-h-dvh flex flex-col bg-background text-on-surface antialiased">
+				{/* <AuthContextProvider> */}
 				{children}
+				{/* </AuthContextProvider> */}
 			</body>
 		</html>
 	);

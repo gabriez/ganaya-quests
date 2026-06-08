@@ -1,0 +1,28 @@
+"use client";
+import { Sidebar } from "@/components/Sidebar";
+import { MobileSidebar } from "@/components/MobileSidebar";
+import { TopAppBar } from "@/components/TopAppBar/TopAppBar";
+import { ReactNode, useState } from "react";
+
+export default function DashboardLayout({ children }: { children: ReactNode }) {
+	const [desktopOpen, setDesktopOpen] = useState(true);
+	const [mobileOpen, setMobileOpen] = useState(false);
+
+	return (
+		<div>
+			<TopAppBar onMenuToggle={() => setMobileOpen(!mobileOpen)} />
+
+			<div className="flex">
+				<Sidebar
+					open={desktopOpen}
+					onToggle={() => setDesktopOpen(!desktopOpen)}
+				/>
+
+				{/* Mobile drawer */}
+				<MobileSidebar open={mobileOpen} onClose={() => setMobileOpen(false)} />
+
+				<main className="p-6 min-h-dvh bg-background flex-1">{children}</main>
+			</div>
+		</div>
+	);
+}

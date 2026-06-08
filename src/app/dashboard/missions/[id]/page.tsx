@@ -1,33 +1,43 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { TopAppBar } from "@/components/TopAppBar";
+import { TopAppBar } from "@/components/TopAppBar/TopAppBar";
 
-const missionData: Record<string, {
-	name: string;
-	reward: string;
-	icon: string;
-	color: string;
-	steps: string[];
-	description: string;
-	image: string;
-}> = {
+const missionData: Record<
+	string,
+	{
+		name: string;
+		reward: string;
+		icon: string;
+		color: string;
+		steps: string[];
+		description: string;
+		image: string;
+	}
+> = {
 	instagram: {
 		name: "Instagram Explorer",
 		reward: "6.000 fichas",
 		icon: "camera",
 		color: "#E1306C",
 		description: "Completá los pasos para reclamar tu botín real.",
-		image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtDQiDEy5gi2rPeLo-4jVny7N8PBMHtLtqF74vQIdq9JGmBlPUbynFVgN0fHX9cUc-ubavyBqrgDM1em2v0H1yM5N_bnVQr6DESWw02I37iuTUKQes2a91m7TwO2w8UR9cHpvv_AiVW9SJ_wTMAE0CKL0EoMWFUgeHQ5tOTm4GNQUVMZghDRqvg_MTOhP3H87ijPtz88fGpHq1wAcnsXCD1NmSKEMAgZQl53LoJXHnRySax6fBznu5_G-Ny8e-xh20YCIyUZmJyKJ4",
-		steps: ["Seguir la cuenta", "Comentar algo positivo", "Activar notificaciones"],
+		image:
+			"https://lh3.googleusercontent.com/aida-public/AB6AXuDtDQiDEy5gi2rPeLo-4jVny7N8PBMHtLtqF74vQIdq9JGmBlPUbynFVgN0fHX9cUc-ubavyBqrgDM1em2v0H1yM5N_bnVQr6DESWw02I37iuTUKQes2a91m7TwO2w8UR9cHpvv_AiVW9SJ_wTMAE0CKL0EoMWFUgeHQ5tOTm4GNQUVMZghDRqvg_MTOhP3H87ijPtz88fGpHq1wAcnsXCD1NmSKEMAgZQl53LoJXHnRySax6fBznu5_G-Ny8e-xh20YCIyUZmJyKJ4",
+		steps: [
+			"Seguir la cuenta",
+			"Comentar algo positivo",
+			"Activar notificaciones",
+		],
 	},
 	telegram: {
 		name: "Telegram Explorer",
 		reward: "4.500 fichas",
 		icon: "send",
 		color: "#0088cc",
-		description: "Unite al canal y activá las notificaciones para recibir tu recompensa.",
-		image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCkSkzErHPVB2v-2XLuFWNEj2muBqY1r_epJ1FKc4l2ZDpMJQA8pC4zICxBBnmYhUohPpwhGaupOxgAehubgFLsf1DjAtmefs4XikobHbJNahMG0gT6VHUTZVJcatpXVgivZxFb7TK3W4qyz6jwDntOBZ6unIhQGsDR7lXwfovJSVixPI9uiOJed9x5pdShz-7ZpxXWW5lWveFHr89yRhiJK3jk4x8WeAa-mAtTsVVLLvf8mvJglJPUhu_WoXW82CCUtyVSabZlS480",
+		description:
+			"Unite al canal y activá las notificaciones para recibir tu recompensa.",
+		image:
+			"https://lh3.googleusercontent.com/aida-public/AB6AXuCkSkzErHPVB2v-2XLuFWNEj2muBqY1r_epJ1FKc4l2ZDpMJQA8pC4zICxBBnmYhUohPpwhGaupOxgAehubgFLsf1DjAtmefs4XikobHbJNahMG0gT6VHUTZVJcatpXVgivZxFb7TK3W4qyz6jwDntOBZ6unIhQGsDR7lXwfovJSVixPI9uiOJed9x5pdShz-7ZpxXWW5lWveFHr89yRhiJK3jk4x8WeAa-mAtTsVVLLvf8mvJglJPUhu_WoXW82CCUtyVSabZlS480",
 		steps: ["Unirse al canal", "Activar notificaciones", "Escribir un saludo"],
 	},
 	whatsapp: {
@@ -36,7 +46,8 @@ const missionData: Record<string, {
 		icon: "chat",
 		color: "#25D366",
 		description: "Compartí y ayudanos a crecer en WhatsApp.",
-		image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCkSkzErHPVB2v-2XLuFWNEj2muBqY1r_epJ1FKc4l2ZDpMJQA8pC4zICxBBnmYhUohPpwhGaupOxgAehubgFLsf1DjAtmefs4XikobHbJNahMG0gT6VHUTZVJcatpXVgivZxFb7TK3W4qyz6jwDntOBZ6unIhQGsDR7lXwfovJSVixPI9uiOJed9x5pdShz-7ZpxXWW5lWveFHr89yRhiJK3jk4x8WeAa-mAtTsVVLLvf8mvJglJPUhu_WoXW82CCUtyVSabZlS480",
+		image:
+			"https://lh3.googleusercontent.com/aida-public/AB6AXuCkSkzErHPVB2v-2XLuFWNEj2muBqY1r_epJ1FKc4l2ZDpMJQA8pC4zICxBBnmYhUohPpwhGaupOxgAehubgFLsf1DjAtmefs4XikobHbJNahMG0gT6VHUTZVJcatpXVgivZxFb7TK3W4qyz6jwDntOBZ6unIhQGsDR7lXwfovJSVixPI9uiOJed9x5pdShz-7ZpxXWW5lWveFHr89yRhiJK3jk4x8WeAa-mAtTsVVLLvf8mvJglJPUhu_WoXW82CCUtyVSabZlS480",
 		steps: ["Compartir el link", "Enviar a 3 contactos", "Capturar pantalla"],
 	},
 	twitter: {
@@ -45,7 +56,8 @@ const missionData: Record<string, {
 		icon: "x",
 		color: "#1da1f2",
 		description: "Seguinos en X y participá de la conversación.",
-		image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCkSkzErHPVB2v-2XLuFWNEj2muBqY1r_epJ1FKc4l2ZDpMJQA8pC4zICxBBnmYhUohPpwhGaupOxgAehubgFLsf1DjAtmefs4XikobHbJNahMG0gT6VHUTZVJcatpXVgivZxFb7TK3W4qyz6jwDntOBZ6unIhQGsDR7lXwfovJSVixPI9uiOJed9x5pdShz-7ZpxXWW5lWveFHr89yRhiJK3jk4x8WeAa-mAtTsVVLLvf8mvJglJPUhu_WoXW82CCUtyVSabZlS480",
+		image:
+			"https://lh3.googleusercontent.com/aida-public/AB6AXuCkSkzErHPVB2v-2XLuFWNEj2muBqY1r_epJ1FKc4l2ZDpMJQA8pC4zICxBBnmYhUohPpwhGaupOxgAehubgFLsf1DjAtmefs4XikobHbJNahMG0gT6VHUTZVJcatpXVgivZxFb7TK3W4qyz6jwDntOBZ6unIhQGsDR7lXwfovJSVixPI9uiOJed9x5pdShz-7ZpxXWW5lWveFHr89yRhiJK3jk4x8WeAa-mAtTsVVLLvf8mvJglJPUhu_WoXW82CCUtyVSabZlS480",
 		steps: ["Seguir la cuenta", "Retuitear un post", "Comentar"],
 	},
 };

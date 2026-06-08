@@ -28,7 +28,9 @@ export default function LoginPage() {
 				{/* Header */}
 				<header className="w-full mb-stack-lg text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
 					<div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-surface-container-high shadow-lg shadow-primary/10 mb-stack-md border border-white/5">
-						<span className="material-symbols-outlined text-secondary text-5xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+						<span
+							className="material-symbols-outlined text-secondary text-5xl"
+							style={{ fontVariationSettings: "'FILL' 1" }}>
 							casino
 						</span>
 					</div>
@@ -42,7 +44,9 @@ export default function LoginPage() {
 
 				{/* Login Form */}
 				<section className="w-full">
-					<form onSubmit={handleSubmit} className="space-y-stack-md glass-card rounded-xl p-6 md:p-8 shadow-2xl">
+					<form
+						onSubmit={handleSubmit}
+						className="space-y-stack-md glass-card rounded-xl p-6 md:p-8 shadow-2xl">
 						{/* Username */}
 						<div className="floating-label-input">
 							<input
@@ -53,7 +57,9 @@ export default function LoginPage() {
 								onChange={(e) => setUsername(e.target.value)}
 								className="w-full bg-surface-container border border-outline-variant rounded-lg px-4 py-4 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
 							/>
-							<label htmlFor="username" className="floating-label font-label-md text-outline">
+							<label
+								htmlFor="username"
+								className="floating-label font-label-md text-outline">
 								Usuario o Correo
 							</label>
 						</div>
@@ -68,7 +74,9 @@ export default function LoginPage() {
 								onChange={(e) => setPassword(e.target.value)}
 								className="w-full bg-surface-container border border-outline-variant rounded-lg px-4 py-4 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all pr-12"
 							/>
-							<label htmlFor="password" className="floating-label font-label-md text-outline">
+							<label
+								htmlFor="password"
+								className="floating-label font-label-md text-outline">
 								Contraseña
 							</label>
 							<button
@@ -98,24 +106,6 @@ export default function LoginPage() {
 							Iniciar Sesión
 						</button>
 					</form>
-
-					{/* Social Auth Divider */}
-					<div className="relative my-stack-md flex items-center justify-center">
-						<div className="absolute inset-0 flex items-center">
-							<div className="w-full border-t border-outline-variant" />
-						</div>
-						<span className="relative px-4 bg-background text-outline font-label-sm">
-							O ingresá con
-						</span>
-					</div>
-
-					{/* Social Buttons Placeholder */}
-					<div className="flex gap-gutter justify-center mb-stack-lg">
-						<button className="flex-1 max-w-44 h-12 bg-surface-container-high border border-outline-variant/30 rounded-xl flex items-center justify-center gap-2 hover:bg-surface-variant transition-colors active-scale text-on-surface-variant font-label-md">
-							<span className="material-symbols-outlined">login</span>
-							Google
-						</button>
-					</div>
 				</section>
 
 				{/* Register Link */}
