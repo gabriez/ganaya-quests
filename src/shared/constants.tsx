@@ -1,8 +1,8 @@
-import { Home } from "./icons/Home";
-import { Ranking } from "./icons/Ranking";
-import { RocketLaunch } from "./icons/RocketLaunch";
-import { SidebarLinkType } from "./types";
-import { IconsProps } from "./types/iconsProps";
+import { Home } from "../icons/Home";
+import { Ranking } from "../icons/Ranking";
+import { RocketLaunch } from "../icons/RocketLaunch";
+import { SidebarLinkType } from "../types";
+import { IconsProps } from "../types/iconsProps";
 
 export const AUTH_TOKEN = "authToken";
 

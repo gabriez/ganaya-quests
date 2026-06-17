@@ -1,9 +1,16 @@
 "use client";
-import { AUTH_TOKEN, ROUTES } from "@/constants";
+import { AUTH_TOKEN, ROUTES } from "@/shared/constants";
 import { AuthContextType, UserType } from "@/types/authContext";
 import { jwtDecode } from "@/utils/decodeJWT";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, createContext, useEffect, useState } from "react";
+import {
+	ReactNode,
+	createContext,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 
 export const AuthContext = createContext<AuthContextType>({
 	authToken: null,
@@ -12,58 +19,65 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-	const [authToken, setAuthToken] = useState<string | null>(null);
-	const [user, setUser] = useState<UserType | null>(null);
+	const [authToken, setAuthToken] = useState<string | null>(() => {
+		if (typeof window === "undefined") return null;
+		const token = localStorage.getItem(AUTH_TOKEN);
+		if (token) {
+			try {
+				jwtDecode<UserType>(token); // Validate JWT, don't store if invalid
+				return token;
+			} catch {
+				console.error("Error decoding stored token");
+				localStorage.removeItem(AUTH_TOKEN);
+			}
+		}
+		return null;
+	});
 
 	const navigation = useRouter();
 	const pathname = usePathname();
 
-	useEffect(() => {
-		const token = localStorage.getItem(AUTH_TOKEN);
-		if (token) {
-			setAuthToken(token);
-
-			try {
-				const decodedUser = jwtDecode<UserType>(token);
-				setUser(decodedUser);
-			} catch (error) {
-				console.error("Error decoding token:", error);
-				setAuthToken(null);
-				setUser(null);
-			}
+	// Derive user from authToken — avoids setState cascades in effects.
+	// Also checks expiry so stale tokens never produce a non-null user,
+	// preventing redirect loops after token expiry.
+	const user = useMemo<UserType | null>(() => {
+		if (!authToken) return null;
+		try {
+			const decoded = jwtDecode<UserType>(authToken);
+			const time = new Date().getTime() / 1000;
+			if (decoded.exp && decoded.exp < time) return null;
+			return decoded;
+		} catch {
+			return null;
 		}
-	}, []);
+	}, [authToken]);
 
+	const logout = useCallback(() => {
+		setAuthToken(null);
+		localStorage.removeItem(AUTH_TOKEN);
+		navigation.push(ROUTES.LOGIN);
+	}, [navigation]);
+
+	// Clean up stale tokens from localStorage when user is derived but token exists
+	// TODO: check this code in case it deletes AUTH_TOKEN when user is null but authToken is valid
 	useEffect(() => {
-		const time = new Date().getTime() / 1000;
+		if (!user && authToken) {
+			localStorage.removeItem(AUTH_TOKEN);
+		}
+	}, [authToken, user]);
 
-		if (user) {
-			if (user.exp && user.exp < time) {
-				setAuthToken(null);
-				setUser(null);
-				localStorage.removeItem(AUTH_TOKEN);
-				navigation.push(ROUTES.LOGIN);
-				return;
-			}
-
-			if (pathname === ROUTES.LOGIN) {
-				navigation.push(ROUTES.DASHBOARD);
-				return;
-			}
+	// Route guard — only handles navigation, no setState calls
+	useEffect(() => {
+		if (user && pathname === ROUTES.LOGIN) {
+			navigation.push(ROUTES.DASHBOARD);
+			return;
 		}
 
-		if (pathname !== ROUTES.LOGIN && !user) {
+		if (!user && pathname !== ROUTES.LOGIN) {
 			navigation.push(ROUTES.LOGIN);
 			return;
 		}
-	}, [pathname]);
-
-	const logout = () => {
-		setAuthToken(null);
-		setUser(null);
-		localStorage.removeItem(AUTH_TOKEN);
-		navigation.push(ROUTES.LOGIN);
-	};
+	}, [pathname, user, navigation]);
 
 	return (
 		<AuthContext.Provider

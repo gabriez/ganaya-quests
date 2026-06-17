@@ -1,6 +1,6 @@
 "use client";
 
-import { ROUTES } from "@/constants";
+import { ROUTES } from "@/shared/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { Balance } from "./Balance";
@@ -24,11 +24,12 @@ export const TopAppBar = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
 			<div className="flex items-center gap-6 md:flex hidden">
 				<Balance />
 				<div className="w-10 h-10 rounded-full bg-surface-variant overflow-hidden flex items-center justify-center border border-outline-variant">
-					{/* TODO: Replace with actual user profile image and Image component */}
-					<img
+					<Image
 						alt="User Profile"
 						className="w-full h-full object-cover"
 						src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8hM-6HrYibIqyzkCNgeaR05_yrCaP-yr4fKPB72nT7Q0DcF3oe3GaUlzUEM27rolQZZ3gQTMWKNsSs9cFT5e1bafbATV-s4SDR2J2TCMlckRkIOSJxCtc3xL_2BAQaCYjeYoablOUP42167imWxrMexF6FALqXxiy79177VUu_8tu4eviQGg5JSzc9ObfVYjDvtX7vBRpc_HcjX9E3ot3s5CI9F8jUyotv1ygQTsvpvB1E2wJBOf2Xr3gk1__fzBRnWRgCx3CS3Ev"
+						width={40}
+						height={40}
 					/>
 				</div>
 			</div>

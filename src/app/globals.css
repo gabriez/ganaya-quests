@@ -230,6 +230,10 @@ body {
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.1);
 }
 
+.mission-glow:hover {
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+}
+
 /* ───────── Gradients ───────── */
 .reward-gradient {
   background: linear-gradient(135deg, #ffdf9f 0%, #ffc640 100%);

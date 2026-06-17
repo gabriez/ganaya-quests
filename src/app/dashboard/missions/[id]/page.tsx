@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import { TopAppBar } from "@/components/TopAppBar/TopAppBar";
 
 const missionData: Record<
@@ -119,10 +120,12 @@ export default function MissionDetailPage() {
 											background: `linear-gradient(135deg, #ffdf9f 0%, #ffc640 100%)`,
 											boxShadow: `0 0 20px rgba(255, 198, 64, 0.25)`,
 										}}>
-										<img
+										<Image
 											alt={`${mission.name} icon`}
 											className="w-12 h-12"
 											src={mission.image}
+											width={48}
+											height={48}
 										/>
 									</div>
 									<h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold mb-2">

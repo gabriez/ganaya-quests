@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { AuthContextProvider } from "@/context/AuthContext";
 
 const beVietnamPro = Be_Vietnam_Pro({
 	variable: "--font-be-vietnam-pro",
@@ -37,6 +36,7 @@ export default function RootLayout({
 			lang="es"
 			className={`dark ${beVietnamPro.variable} ${plusJakartaSans.variable}`}>
 			<head>
+				{/* eslint-disable-next-line @next/next/no-page-custom-font */}
 				<link
 					href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
 					rel="stylesheet"

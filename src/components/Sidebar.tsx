@@ -3,7 +3,7 @@ import { Stars } from "@/icons/Stars";
 import { usePathname } from "next/navigation";
 import { ItemSidebar } from "./ItemSidebar";
 import { Logout } from "./Logout";
-import { PUBLIC_LINKS } from "@/constants";
+import { PUBLIC_LINKS } from "@/shared/constants";
 
 export const Sidebar = ({
 	open,
@@ -17,7 +17,7 @@ export const Sidebar = ({
 	return (
 		<aside
 			className={
-				"hidden sticky md:grid left-0 top-0 pt-20 pb-6 grid-cols-1 grid-rows-[auto_1fr_auto] bg-surface-container min-h-dvh transition-all duration-300 " +
+				"hidden sticky md:grid left-0 top-0 pt-20 pb-6 grid-cols-1 grid-rows-[auto_1fr_auto] bg-surface-container min-h-dvh h-dvh transition-all duration-300 " +
 				(open ? "w-64" : "w-20")
 			}>
 			{/* Toggle button — positioned on the right edge */}
@@ -41,6 +41,7 @@ export const Sidebar = ({
 			</button>
 
 			{/* Username + icon */}
+
 			<div
 				className={
 					"flex items-center self-start pr-2 gap-3 " +

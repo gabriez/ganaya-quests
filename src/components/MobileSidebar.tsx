@@ -3,8 +3,9 @@ import { Stars } from "@/icons/Stars";
 import { usePathname } from "next/navigation";
 import { ItemSidebar } from "./ItemSidebar";
 import { Logout } from "./Logout";
-import { PUBLIC_LINKS } from "@/constants";
+import { PUBLIC_LINKS } from "@/shared/constants";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { Balance } from "./TopAppBar/Balance";
 
 export const MobileSidebar = ({
@@ -83,11 +84,13 @@ export const MobileSidebar = ({
 
 				<div className="flex items-center ml-4 mb-4 ">
 					<div className="w-10 h-10 rounded-full bg-surface-variant overflow-hidden flex items-center justify-center border border-outline-variant">
-						<img
-							alt="User Profile"
-							className="w-full h-full object-cover"
-							src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8hM-6HrYibIqyzkCNgeaR05_yrCaP-yr4fKPB72nT7Q0DcF3oe3GaUlzUEM27rolQZZ3gQTMWKNsSs9cFT5e1bafbATV-s4SDR2J2TCMlckRkIOSJxCtc3xL_2BAQaCYjeYoablOUP42167imWxrMexF6FALqXxiy79177VUu_8tu4eviQGg5JSzc9ObfVYjDvtX7vBRpc_HcjX9E3ot3s5CI9F8jUyotv1ygQTsvpvB1E2wJBOf2Xr3gk1__fzBRnWRgCx3CS3Ev"
-						/>
+					<Image
+						alt="User Profile"
+						className="w-full h-full object-cover"
+						src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8hM-6HrYibIqyzkCNgeaR05_yrCaP-yr4fKPB72nT7Q0DcF3oe3GaUlzUEM27rolQZZ3gQTMWKNsSs9cFT5e1bafbATV-s4SDR2J2TCMlckRkIOSJxCtc3xL_2BAQaCYjeYoablOUP42167imWxrMexF6FALqXxiy79177VUu_8tu4eviQGg5JSzc9ObfVYjDvtX7vBRpc_HcjX9E3ot3s5CI9F8jUyotv1ygQTsvpvB1E2wJBOf2Xr3gk1__fzBRnWRgCx3CS3Ev"
+						width={40}
+						height={40}
+					/>
 					</div>
 					<Balance className="ml-4 border-none" />
 				</div>
