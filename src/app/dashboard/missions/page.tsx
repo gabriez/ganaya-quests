@@ -128,7 +128,7 @@ export default function MissionsPage() {
 			<div className="fixed top-0 right-0 -z-10 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
 			<div className="fixed bottom-0 left-0 -z-10 w-96 h-96 bg-secondary/5 rounded-full blur-[120px]" />
 
-			<div className="pt-20 pb-28 md:pb-12 px-container-padding-mobile md:px-container-padding-desktop">
+			<div className="md:pb-12 px-container-padding-mobile md:px-container-padding-desktop">
 				<div className="max-w-7xl mx-auto space-y-stack-md md:space-y-stack-lg">
 					<DashboardHeader />
 
