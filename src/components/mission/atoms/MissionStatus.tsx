@@ -1,9 +1,9 @@
 interface Props {
-  completed?: boolean
+  completed?: boolean;
 }
 
 export const MissionStatus = ({ completed }: Props) => {
-  if (!completed) return null
+  if (!completed) return null;
 
   return (
     <div className="absolute top-2 right-2 rotate-12">
@@ -11,5 +11,5 @@ export const MissionStatus = ({ completed }: Props) => {
         COMPLETADA
       </span>
     </div>
-  )
-}
+  );
+};

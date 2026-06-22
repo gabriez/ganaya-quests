@@ -249,6 +249,14 @@ body {
   position: relative;
 }
 
+.floating-label-input label {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  transition: all 0.2s ease-out;
+  pointer-events: none;
+}
+
 .floating-label-input input:focus ~ label,
 .floating-label-input input:not(:placeholder-shown) ~ label {
   top: -0.5rem;
@@ -259,21 +267,21 @@ body {
   padding: 0 4px;
 }
 
-.floating-label-input label {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  transition: all 0.2s ease-out;
-  pointer-events: none;
-}
-
 /* ───────── Ambient Glows ───────── */
 .ambient-glow-primary {
-  background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(56, 189, 248, 0.08) 0%,
+    transparent 70%
+  );
 }
 
 .ambient-glow-secondary {
-  background: radial-gradient(ellipse at center, rgba(255, 198, 64, 0.08) 0%, transparent 70%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 198, 64, 0.08) 0%,
+    transparent 70%
+  );
 }
 
 /* ───────── Input Autofill Fix ───────── */

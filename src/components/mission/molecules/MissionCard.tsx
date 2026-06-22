@@ -1,15 +1,25 @@
-import Link from "next/link"
-import type { Mission } from "@/types/mission"
-import { MissionIcon } from "../atoms/MissionIcon"
-import { MissionReward } from "../atoms/MissionReward"
-import { MissionActionButton } from "../atoms/MissionActionButton"
+import Link from "next/link";
+import type { Mission } from "@/types/mission";
+import { MissionActionButton } from "../atoms/MissionActionButton";
+import { MissionIcon } from "../atoms/MissionIcon";
+import { MissionReward } from "../atoms/MissionReward";
 
 interface Props {
-  mission: Mission
+  mission: Mission;
 }
 
 export const MissionCard = ({ mission }: Props) => {
-	const { title, description, reward, icon, color, completed, progress, href, onAction } = mission
+  const {
+    title,
+    description,
+    reward,
+    icon,
+    color,
+    completed,
+    progress,
+    href,
+    onAction,
+  } = mission;
 
   const content = (
     <div
@@ -30,7 +40,9 @@ export const MissionCard = ({ mission }: Props) => {
         <MissionReward reward={reward} completed={completed} />
       </div>
 
-      <h3 className={`font-title-md text-title-md text-on-surface mb-2 ${completed ? "line-through" : ""}`}>
+      <h3
+        className={`font-title-md text-title-md text-on-surface mb-2 ${completed ? "line-through" : ""}`}
+      >
         {title}
       </h3>
 
@@ -47,7 +59,9 @@ export const MissionCard = ({ mission }: Props) => {
             />
           </div>
           <div className="flex justify-between items-center mb-4">
-            <span className="text-label-sm text-on-surface-variant">{progress}%</span>
+            <span className="text-label-sm text-on-surface-variant">
+              {progress}%
+            </span>
           </div>
         </>
       )}
@@ -55,7 +69,9 @@ export const MissionCard = ({ mission }: Props) => {
       <div className="flex justify-between items-center">
         {completed ? (
           <span className="text-label-sm text-secondary font-bold flex items-center gap-1">
-            <span className="material-symbols-outlined text-sm">check_circle</span>
+            <span className="material-symbols-outlined text-sm">
+              check_circle
+            </span>
             Reclamado
           </span>
         ) : (
@@ -64,11 +80,11 @@ export const MissionCard = ({ mission }: Props) => {
         <MissionActionButton completed={completed} onClick={onAction} />
       </div>
     </div>
-  )
+  );
 
   if (href) {
-    return <Link href={href}>{content}</Link>
+    return <Link href={href}>{content}</Link>;
   }
 
-  return content
-}
+  return content;
+};

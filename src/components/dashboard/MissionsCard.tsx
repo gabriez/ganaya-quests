@@ -1,3 +1,3 @@
 export const MissionsCard = () => {
-	return <div>MissionsCard</div>;
+  return <div>MissionsCard</div>;
 };

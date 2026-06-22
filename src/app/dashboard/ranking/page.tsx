@@ -1,3 +1,3 @@
 export default function Ranking() {
-	return <div></div>;
+  return <div></div>;
 }

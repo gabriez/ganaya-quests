@@ -1,8 +1,8 @@
-import type { Mission } from "@/types/mission"
+import type { Mission } from "@/types/mission";
 
 interface Props {
-  icon: Mission["icon"]
-  color: Mission["color"]
+  icon: Mission["icon"];
+  color: Mission["color"];
 }
 
 export const MissionIcon = ({ icon, color }: Props) => (
@@ -12,11 +12,8 @@ export const MissionIcon = ({ icon, color }: Props) => (
       backgroundColor: `${color}20`,
     }}
   >
-    <span
-      className="material-symbols-outlined text-3xl"
-      style={{ color }}
-    >
+    <span className="material-symbols-outlined text-3xl" style={{ color }}>
       {icon}
     </span>
   </div>
-)
+);
