@@ -183,3 +183,17 @@ Inputs use a darker variant of the surface color to look recessed. On focus, the
 
 ### Progress Indicators
 Linear bars for mission completion. The "fill" should have a subtle horizontal gradient and a slight outer glow to signify energy and movement.
+
+---
+
+## Project Structure Convention
+
+This project enforces a strict folder convention for code organization:
+
+| Convention | Rule |
+|------------|------|
+| **Types** | All type definitions go inside `{root}/types/`. Interfaces, type aliases, enums in `.ts` files grouped by domain. |
+| **Components** | All UI components go inside `{root}/components/`. React/JSX in `.tsx` files grouped by feature or atomic design. |
+| **Monorepo** | Each app/package (`apps/web`, `apps/admin`, `packages/shared`) follows the same pattern independently. |
+
+For more details, load the `project-structure` skill.

@@ -33,7 +33,11 @@ export default function AdminRootLayout({
       className={`dark ${beVietnamPro.variable} ${plusJakartaSans.variable}`}
     >
       <head>
-        <link crossOrigin="anonymous" href={materialSymbolsUrl} rel="stylesheet" />
+        <link
+          crossOrigin="anonymous"
+          href={materialSymbolsUrl}
+          rel="stylesheet"
+        />
       </head>
       <body className="min-h-dvh flex flex-col bg-background text-on-surface antialiased">
         {children}

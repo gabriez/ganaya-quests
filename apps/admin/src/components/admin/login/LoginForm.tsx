@@ -1,9 +1,9 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
+import { Input } from "@/components/ui/Input";
 import PasswordField from "./PasswordField";
 
 interface LoginFormProps {

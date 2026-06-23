@@ -29,7 +29,10 @@ export default function PasswordField({
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-center px-1">
-        <label className="font-label-md text-label-md text-on-surface-variant">
+        <label
+          className="font-label-md text-label-md text-on-surface-variant"
+          htmlFor="password"
+        >
           {label}
         </label>
         {forgotLink}
@@ -37,6 +40,7 @@ export default function PasswordField({
       <div className="relative">
         <Input
           icon="lock"
+          id="password"
           type={visible ? "text" : "password"}
           placeholder={placeholder}
           className={`pr-12 ${className}`}
