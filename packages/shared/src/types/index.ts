@@ -6,3 +6,12 @@ export type SidebarLinkType = {
   icon: (props: IconsProps) => JSX.Element;
   text: string;
 };
+
+export type {
+  AdminMission,
+  AdminSidebarLink,
+  MissionCategory,
+  MissionStatus,
+  MissionStep,
+  VerificationType,
+} from "./admin";

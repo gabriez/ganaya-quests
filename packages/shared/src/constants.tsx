@@ -1,7 +1,7 @@
 import { Home } from "./icons/Home";
 import { Ranking } from "./icons/Ranking";
 import { RocketLaunch } from "./icons/RocketLaunch";
-import type { SidebarLinkType } from "./types";
+import type { AdminSidebarLink, SidebarLinkType } from "./types";
 import type { IconsProps } from "./types/iconsProps";
 
 export const AUTH_TOKEN = "authToken";
@@ -14,6 +14,30 @@ export const ROUTES = {
 };
 
 export const ADMIN_TOKEN = "adminToken";
+
+export const ADMIN_ROUTES = {
+  MISIONES: "/panel",
+  REVISION: "/panel/revision",
+  USUARIOS: "/panel/usuarios",
+};
+
+export const ADMIN_LINKS: AdminSidebarLink[] = [
+  {
+    path: ADMIN_ROUTES.MISIONES,
+    icon: "assignment",
+    text: "Misiones",
+  },
+  {
+    path: ADMIN_ROUTES.REVISION,
+    icon: "fact_check",
+    text: "Revisión de Tareas",
+  },
+  {
+    path: ADMIN_ROUTES.USUARIOS,
+    icon: "group",
+    text: "Usuarios",
+  },
+];
 
 export const PUBLIC_LINKS: SidebarLinkType[] = [
   {
