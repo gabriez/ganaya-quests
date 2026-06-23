@@ -56,8 +56,8 @@ Chain strategy: feature-branch-chain
 
 ## Phase 4: Mission Form Modal — PR #4
 
-- [ ] 4.1 Create `apps/admin/src/components/admin/mission-form/StepCard.tsx` — step row with up/down/remove
-- [ ] 4.2 Create `apps/admin/src/components/admin/mission-form/StepBuilder.tsx` — step list + add/reorder
-- [ ] 4.3 Create `apps/admin/src/components/admin/mission-form/MissionFields.tsx` — field group with inline validation
-- [ ] 4.4 Create `apps/admin/src/components/admin/mission-form/MissionFormModal.tsx` — modal wrapper + content lock + submit
-- [ ] 4.5 Wire create/edit/activate/cancel flows in page.tsx via reducer dispatch
+- [x] 4.1 Create `apps/admin/src/components/admin/mission-form/StepCard.tsx` — step row with up/down/remove
+- [x] 4.2 Create `apps/admin/src/components/admin/mission-form/StepBuilder.tsx` — step list + add/reorder
+- [x] 4.3 Create `apps/admin/src/components/admin/mission-form/MissionFields.tsx` — field group with inline validation
+- [x] 4.4 Create `apps/admin/src/components/admin/mission-form/MissionFormModal.tsx` — modal wrapper + content lock + submit
+- [x] 4.5 Wire create/edit/activate/cancel flows in MissionsList.tsx via reducer dispatch

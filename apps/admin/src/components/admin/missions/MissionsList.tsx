@@ -1,6 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useReducer } from "react";
+import type { AdminMission } from "@shared/types";
+import { useCallback, useEffect, useReducer, useState } from "react";
+import { MissionFormModal } from "@/components/admin/mission-form/MissionFormModal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Pagination } from "@/components/ui/Pagination";
@@ -9,11 +11,13 @@ import { FilterTabs } from "./FilterTabs";
 import {
   activateMission,
   cancelMission,
+  createMission,
   deleteMission,
   getCurrentPageItems,
   initialState,
   loadMissions,
   missionsReducer,
+  updateMission,
 } from "./MissionsReducer";
 import { MissionTable } from "./MissionTable";
 
@@ -31,6 +35,12 @@ import { MissionTable } from "./MissionTable";
  */
 function MissionsList() {
   const [state, dispatch] = useReducer(missionsReducer, initialState);
+
+  /* ── Mission Form Modal state ── */
+  const [editingMission, setEditingMission] = useState<AdminMission | null>(
+    null,
+  );
+  const [showFormModal, setShowFormModal] = useState(false);
 
   /* ── Load missions on mount ── */
   useEffect(() => {
@@ -63,24 +73,41 @@ function MissionsList() {
   }, []);
 
   const handleCreate = useCallback(() => {
-    // PR #4: open MissionFormModal
-    console.log("Crear misión — modal coming in PR #4");
+    setEditingMission(null);
+    setShowFormModal(true);
   }, []);
 
-  const handleEdit = useCallback((id: string) => {
-    // PR #4: open MissionFormModal in edit mode
-    console.log("Edit mission:", id);
-  }, []);
+  const handleEdit = useCallback(
+    (id: string) => {
+      const mission = state.missions.find((m) => m.id === id);
+      if (!mission) return;
+      setEditingMission(mission);
+      setShowFormModal(true);
+    },
+    [state.missions],
+  );
 
-  const handleView = useCallback((id: string) => {
-    // PR #4: open read-only view
-    console.log("View mission:", id);
-  }, []);
+  const handleView = useCallback(
+    (id: string) => {
+      const mission = state.missions.find((m) => m.id === id);
+      if (!mission) return;
+      setEditingMission(mission);
+      setShowFormModal(true);
+    },
+    [state.missions],
+  );
 
-  const handleDuplicate = useCallback((id: string) => {
-    // PR #4: duplicate through modal
-    console.log("Duplicate mission:", id);
-  }, []);
+  const handleDuplicate = useCallback(
+    (id: string) => {
+      // Duplicate through modal — future enhancement
+      const mission = state.missions.find((m) => m.id === id);
+      if (!mission) return;
+      // Pre-fill as a new mission with copy of existing data
+      setEditingMission(null);
+      setShowFormModal(true);
+    },
+    [state.missions],
+  );
 
   const handleActivate = useCallback((id: string) => {
     const confirmed = window.confirm(
@@ -106,6 +133,33 @@ function MissionsList() {
     deleteMission(dispatch, id).catch((err) => {
       console.error("Failed to delete mission:", err);
     });
+  }, []);
+
+  /* ── Mission Form Modal handlers ── */
+
+  const handleSave = useCallback(
+    (
+      data: Omit<AdminMission, "id" | "createdAt" | "participants">,
+      isCreate: boolean,
+    ) => {
+      if (isCreate) {
+        createMission(dispatch, data).catch((err) => {
+          console.error("Failed to create mission:", err);
+        });
+      } else if (editingMission) {
+        updateMission(dispatch, editingMission.id, data).catch((err) => {
+          console.error("Failed to update mission:", err);
+        });
+      }
+      setShowFormModal(false);
+      setEditingMission(null);
+    },
+    [editingMission],
+  );
+
+  const handleCloseModal = useCallback(() => {
+    setShowFormModal(false);
+    setEditingMission(null);
   }, []);
 
   /* ── Loading ── */
@@ -212,6 +266,16 @@ function MissionsList() {
           onChange={handlePageChange}
         />
       </div>
+
+      {/* ── Mission Form Modal ── */}
+      {showFormModal && (
+        <MissionFormModal
+          open={showFormModal}
+          onClose={handleCloseModal}
+          mission={editingMission}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 }
