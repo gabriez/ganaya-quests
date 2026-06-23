@@ -39,20 +39,20 @@ Chain strategy: feature-branch-chain
 
 ## Phase 2: Admin Layout — PR #2
 
-- [ ] 2.1 Create `apps/admin/src/components/admin/layout/AdminSidebar.tsx` — nav, CTA, user badge, settings+logout
-- [ ] 2.2 Create `apps/admin/src/components/admin/layout/MobileDrawer.tsx` — overlay with hamburger toggle
-- [ ] 2.3 Create `apps/admin/src/app/panel/layout.tsx` — shell: sidebar + drawer + content area
+- [x] 2.1 Create `apps/admin/src/components/admin/layout/AdminSidebar.tsx` — nav, CTA, user badge, settings+logout
+- [x] 2.2 Create `apps/admin/src/components/admin/layout/MobileDrawer.tsx` — overlay with hamburger toggle
+- [x] 2.3 Create `apps/admin/src/app/panel/layout.tsx` — shell: sidebar + drawer + content area
 
 ## Phase 3: Mission Control Page — PR #3
 
-- [ ] 3.1 Create `apps/admin/src/components/admin/missions/MockDataService.ts` — typed in-memory CRUD
-- [ ] 3.2 Create `apps/admin/src/components/admin/missions/MissionsReducer.ts` — LOAD/SET_FILTER/SET_SEARCH/CREATE/UPDATE/ACTIVATE/CANCEL/DELETE
-- [ ] 3.3 Create `apps/admin/src/components/admin/missions/FilterTabs.tsx` — status filter chips
-- [ ] 3.4 Create `apps/admin/src/components/admin/missions/MissionTable.tsx` — table layout
-- [ ] 3.5 Create `apps/admin/src/components/admin/missions/MissionRow.tsx` — row with all fields
-- [ ] 3.6 Create `apps/admin/src/components/admin/missions/RowActions.tsx` — contextual buttons per state
-- [ ] 3.7 Create `apps/admin/src/components/admin/missions/MissionsList.tsx` — orchestrator: search+filters+table+pagination
-- [ ] 3.8 Update `apps/admin/src/app/panel/page.tsx` — wire reducer + MissionsList + right panel
+- [x] 3.1 Create `apps/admin/src/components/admin/missions/MockDataService.ts` — typed in-memory CRUD
+- [x] 3.2 Create `apps/admin/src/components/admin/missions/MissionsReducer.ts` — LOAD/SET_FILTER/SET_SEARCH/CREATE/UPDATE/ACTIVATE/CANCEL/DELETE
+- [x] 3.3 Create `apps/admin/src/components/admin/missions/FilterTabs.tsx` — status filter chips
+- [x] 3.4 Create `apps/admin/src/components/admin/missions/MissionTable.tsx` — table layout
+- [x] 3.5 Create `apps/admin/src/components/admin/missions/MissionRow.tsx` — row with all fields
+- [x] 3.6 Create `apps/admin/src/components/admin/missions/RowActions.tsx` — contextual buttons per state
+- [x] 3.7 Create `apps/admin/src/components/admin/missions/MissionsList.tsx` — orchestrator: search+filters+table+pagination
+- [x] 3.8 Update `apps/admin/src/app/panel/page.tsx` — wire reducer + MissionsList + right panel
 
 ## Phase 4: Mission Form Modal — PR #4
 
