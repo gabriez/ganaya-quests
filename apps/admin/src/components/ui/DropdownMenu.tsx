@@ -1,24 +1,7 @@
 "use client";
 
-import {
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
-interface DropdownItem {
-  label: string;
-  icon?: string;
-  onClick: () => void;
-  variant?: "default" | "danger";
-}
-
-interface DropdownMenuProps {
-  trigger: ReactNode;
-  items: DropdownItem[];
-}
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { DropdownItem, DropdownMenuProps } from "@/types/DropdownMenu";
 
 /**
  * DropdownMenu — menú contextual con vidrio esmerilado.
@@ -77,7 +60,7 @@ function DropdownMenu({ trigger, items }: DropdownMenuProps) {
 
       {/* Menu panel */}
       {open && (
-        <div className="absolute right-0 z-50 mt-1 min-w-[180px] bg-surface-container/90 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl py-1">
+        <div className="absolute right-0 z-50 mt-1 min-w-45 bg-surface-container/90 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl py-1">
           {items.map((item) => (
             <button
               key={item.label}
@@ -109,4 +92,3 @@ function DropdownMenu({ trigger, items }: DropdownMenuProps) {
 DropdownMenu.displayName = "DropdownMenu";
 
 export { DropdownMenu };
-export type { DropdownItem, DropdownMenuProps };
