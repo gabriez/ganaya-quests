@@ -2,12 +2,8 @@
 
 import { ADMIN_LINKS } from "@shared/constants";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-interface AdminSidebarProps {
-  open: boolean;
-  onToggle: () => void;
-}
+import { usePathname, useRouter } from "next/navigation";
+import type { AdminSidebarProps } from "@/types/navbar/AdminSidebar";
 
 /**
  * AdminSidebar — desktop collapsible sidebar for the admin panel.
@@ -19,13 +15,20 @@ interface AdminSidebarProps {
  */
 export const AdminSidebar = ({ open, onToggle }: AdminSidebarProps) => {
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (path: string) => pathname === path;
+
+  const logout = () => {
+    // TODO: wire to real auth context
+    localStorage.removeItem("adminToken");
+    router.push("/");
+  };
 
   return (
     <aside
       className={
-        "hidden md:grid sticky left-0 top-0 pt-20 pb-6 grid-cols-1 grid-rows-[auto_auto_1fr_auto_auto] bg-surface-container min-h-dvh h-dvh transition-all duration-300 z-30 flex-shrink-0 " +
+        "hidden md:grid sticky left-0 top-0 pt-10 pb-6 grid-cols-1 grid-rows-[auto_auto_1fr_auto_auto] bg-surface-container min-h-dvh h-dvh transition-all duration-300 z-30 shrink-0 " +
         (open ? "w-64" : "w-20")
       }
     >
@@ -34,7 +37,7 @@ export const AdminSidebar = ({ open, onToggle }: AdminSidebarProps) => {
         onClick={onToggle}
         type="button"
         className={
-          "absolute hover:cursor-pointer z-10 left-[100%] bg-surface-container border-r border-b border-outline-variant rounded-r-full pr-1 pt-2 pb-2 hover:bg-surface-container-high transition-colors top-[65px]"
+          "absolute hover:cursor-pointer z-10 left-full top-[0%] bg-surface-container border-r border-b border-outline-variant rounded-r-full pr-2 pt-2 pb-1 hover:bg-surface-container-high transition-colors"
         }
         aria-label={open ? "Contraer menú" : "Expandir menú"}
       >
@@ -50,7 +53,7 @@ export const AdminSidebar = ({ open, onToggle }: AdminSidebarProps) => {
           (open ? "pl-6" : "pl-5 justify-center")
         }
       >
-        <div className="block p-2 bg-primary/20 rounded-lg flex-shrink-0">
+        <div className="block p-2 pb-0 bg-primary/20 rounded-lg shrink-0">
           <span className="material-symbols-outlined text-primary text-2xl">
             admin_panel_settings
           </span>
@@ -63,10 +66,7 @@ export const AdminSidebar = ({ open, onToggle }: AdminSidebarProps) => {
           }
         >
           <p className="font-(--font-plus-jakarta-sans) text-title-md font-semibold text-on-surface whitespace-nowrap leading-tight">
-            Midnight Harbor
-          </p>
-          <p className="font-(--font-be-vietnam-pro) text-label-sm text-secondary whitespace-nowrap leading-tight">
-            Elite Member
+            Admin LuckyBet
           </p>
         </div>
       </div>
@@ -115,30 +115,12 @@ export const AdminSidebar = ({ open, onToggle }: AdminSidebarProps) => {
         </ul>
       </nav>
 
-      {/* ── Spacer ── */}
-      <div />
-
-      {/* ── Claim Daily Bonus CTA ── */}
-      <div className={`px-3 py-4 mb-2 ${open ? "" : "flex justify-center"}`}>
-        <button
-          type="button"
-          className={
-            "flex items-center gap-2 bg-secondary text-on-secondary font-label-md rounded-lg transition-all duration-200 hover:bg-secondary-fixed-dim active:scale-[0.98] glow-gold-sm " +
-            (open ? "w-full py-3 px-4 justify-center" : "p-3 justify-center")
-          }
-        >
-          <span className="material-symbols-outlined text-lg">redeem</span>
-          {open && <span className="whitespace-nowrap">Claim Daily Bonus</span>}
-        </button>
-      </div>
-
       {/* ── Settings + Logout ── */}
       <div className="self-end border-t border-outline-variant/30 pt-2">
-        {/* Settings */}
         <Link
           href="#"
           className={
-            "flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high active:bg-surface-variant transition-colors rounded-md " +
+            "flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high active:bg-surface-variant transition-colors " +
             (open ? "" : "justify-center")
           }
         >
@@ -157,14 +139,10 @@ export const AdminSidebar = ({ open, onToggle }: AdminSidebarProps) => {
         <button
           type="button"
           className={
-            "w-full flex items-center gap-3 p-3 hover:cursor-pointer text-on-surface-variant hover:bg-surface-container-high active:bg-surface-variant transition-colors rounded-md " +
+            "w-full flex items-center gap-3 p-3 hover:cursor-pointer text-on-surface-variant hover:bg-surface-container-high active:bg-surface-variant transition-colors " +
             (open ? "" : "justify-center")
           }
-          onClick={() => {
-            // TODO: wire to real auth context
-            localStorage.removeItem("adminToken");
-            window.location.href = "/";
-          }}
+          onClick={logout}
         >
           <span className="material-symbols-outlined">logout</span>
           <span

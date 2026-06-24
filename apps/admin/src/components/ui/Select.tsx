@@ -8,22 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-
-interface SelectOption {
-  value: string;
-  label: string;
-}
-
-interface SelectProps {
-  icon?: string;
-  options: SelectOption[];
-  placeholder?: string;
-  value?: string;
-  onChange?: (value: string) => void;
-  error?: string;
-  className?: string;
-  disabled?: boolean;
-}
+import type { SelectProps } from "@/types/Select";
 
 /**
  * Select — dropdown personalizado con vidrio esmerilado.
@@ -46,9 +31,14 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     ref,
   ) => {
     const [open, setOpen] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null!);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
-    useImperativeHandle(ref, () => containerRef.current);
+    useImperativeHandle(ref, () => {
+      if (containerRef.current) {
+        return containerRef.current;
+      }
+      throw new Error("Select container ref is null");
+    });
 
     const selectedLabel = options.find((o) => o.value === value)?.label ?? "";
 
@@ -182,4 +172,3 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
 Select.displayName = "Select";
 
 export { Select };
-export type { SelectOption, SelectProps };

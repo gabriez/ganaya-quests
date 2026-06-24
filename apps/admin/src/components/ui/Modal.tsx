@@ -1,22 +1,7 @@
 "use client";
 
-import {
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
-type ModalSize = "sm" | "md" | "lg";
-
-interface ModalProps {
-  open: boolean;
-  onClose: () => void;
-  title: string;
-  children: ReactNode;
-  size?: ModalSize;
-}
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { ModalProps, ModalSize } from "@/types/Modal";
 
 const sizeStyles: Record<ModalSize, string> = {
   sm: "max-w-sm",
@@ -109,7 +94,7 @@ function Modal({ open, onClose, title, children, size = "md" }: ModalProps) {
             aria-label="Cerrar"
             className="text-outline hover:text-on-surface transition-colors p-1 rounded-lg hover:bg-white/5"
           >
-            <span className="material-symbols-outlined text-xl">close</span>
+            <span className="material-symbols-outlined text-xl">Cerrar</span>
           </button>
         </div>
 
@@ -123,4 +108,3 @@ function Modal({ open, onClose, title, children, size = "md" }: ModalProps) {
 Modal.displayName = "Modal";
 
 export { Modal };
-export type { ModalProps, ModalSize };
