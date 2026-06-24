@@ -1,13 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
-
-type BadgeVariant = "inactive" | "active" | "completed" | "cancelled";
-
-interface BadgeProps {
-  variant: BadgeVariant;
-  children: ReactNode;
-}
+import type { BadgeProps, BadgeVariant } from "@/types/Badge";
 
 const variantStyles: Record<BadgeVariant, string> = {
   inactive: "bg-outline-variant/30 text-on-surface-variant",
@@ -46,4 +39,3 @@ function Badge({ variant, children }: BadgeProps) {
 Badge.displayName = "Badge";
 
 export { Badge, statusLabels };
-export type { BadgeProps, BadgeVariant };

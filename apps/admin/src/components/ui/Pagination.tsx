@@ -1,16 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-
-interface PaginationProps {
-  current: number;
-  total: number;
-  onChange: (page: number) => void;
-}
-
-type PageEntry =
-  | { type: "page"; value: number }
-  | { type: "ellipsis"; id: string };
+import type { PaginationProps } from "@/types/Pagination";
 
 /**
  * Pagination — navegación de páginas con elipsis.
@@ -147,4 +138,3 @@ function Pagination({ current, total, onChange }: PaginationProps) {
 Pagination.displayName = "Pagination";
 
 export { Pagination };
-export type { PaginationProps };
