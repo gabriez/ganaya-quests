@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import type { PaginationProps } from "@/types/Pagination";
+import type { PageEntry, PaginationProps } from "@/types/Pagination";
 
 /**
  * Pagination — navegación de páginas con elipsis.
