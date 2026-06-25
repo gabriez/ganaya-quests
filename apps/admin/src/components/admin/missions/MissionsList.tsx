@@ -141,7 +141,7 @@ function MissionsList() {
         <Button
           leadingIcon="add_circle"
           onClick={handleCreate}
-          className="whitespace-nowrap shrink-0 font-bold cursor-pointer max-sm:w-full text-sm bg-secondary hover:bg-secondary-fixed-dim"
+          className="whitespace-nowrap shrink-0 cursor-pointer max-sm:w-full text-base font-bold bg-secondary hover:bg-secondary-fixed-dim"
         >
           Crear misión
         </Button>
