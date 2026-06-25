@@ -1,17 +1,7 @@
 "use client";
 
-import type { AdminMission } from "@shared/types";
+import type { MissionTableProps } from "@/types/missions/MissionTable";
 import { MissionRow } from "./MissionRow";
-
-interface MissionTableProps {
-  missions: AdminMission[];
-  onEdit?: (id: string) => void;
-  onActivate?: (id: string) => void;
-  onCancel?: (id: string) => void;
-  onDelete?: (id: string) => void;
-  onView?: (id: string) => void;
-  onDuplicate?: (id: string) => void;
-}
 
 /**
  * MissionTable — standard HTML table for the mission list.
@@ -43,11 +33,11 @@ function MissionTable({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-outline-variant/20">
-      <table className="w-full">
+    <div className=" rounded-lg border border-outline-variant/20 overflow-x-auto">
+      <table className="w-full overflow-x-auto">
         <thead>
           <tr className="border-b border-outline-variant/20 bg-surface-container-low">
-            <th className="py-3 pr-4 text-left text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">
+            <th className="pl-4 py-3 pr-4 text-left text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">
               Misión y Recompensa
             </th>
             <th className="py-3 pr-4 text-left text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">
@@ -56,7 +46,7 @@ function MissionTable({
             <th className="py-3 pr-4 text-left text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">
               Métricas
             </th>
-            <th className="py-3 text-right text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">
+            <th className="py-3 pr-8 text-right text-label-sm font-semibold text-on-surface-variant uppercase tracking-wider">
               Acciones
             </th>
           </tr>
@@ -83,4 +73,3 @@ function MissionTable({
 MissionTable.displayName = "MissionTable";
 
 export { MissionTable };
-export type { MissionTableProps };

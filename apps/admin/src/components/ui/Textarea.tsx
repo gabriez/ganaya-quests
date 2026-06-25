@@ -1,13 +1,7 @@
 "use client";
 
-import { forwardRef, type TextareaHTMLAttributes } from "react";
-
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /** Material Symbols icon name */
-  icon?: string;
-  /** Error message (shows red border + message) */
-  error?: string;
-}
+import { forwardRef } from "react";
+import type { TextareaProps } from "@/types/Textarea";
 
 /**
  * Textarea — átomo multi-línea con icono opcional y estado de error.
@@ -31,7 +25,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             rounded-lg py-3.5 px-4 text-on-surface placeholder:text-outline
             focus:outline-none focus:border-primary
             transition-all duration-300 input-glow
-            font-body-md resize-y min-h-[100px]
+            font-body-md resize-y min-h-25
             ${icon ? "pl-12" : ""}
             ${error ? "border-error" : "border-outline-variant/30"}
             ${className}
@@ -48,4 +42,3 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 Textarea.displayName = "Textarea";
 
 export { Textarea };
-export type { TextareaProps };

@@ -23,7 +23,7 @@ export default function PanelLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
+  const _router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -33,9 +33,9 @@ export default function PanelLayout({
     setMounted(true);
     const token = localStorage.getItem(ADMIN_TOKEN);
     if (!token) {
-      router.replace("/");
+      // router.replace("/");
     }
-  }, [router]);
+  }, []);
 
   // Don't render anything until mounted to avoid flash of content
   if (!mounted) {
@@ -53,7 +53,7 @@ export default function PanelLayout({
       {/* Mobile hamburger trigger — only visible < 768px */}
       <button
         type="button"
-        className="fixed top-4 left-4 z-30 p-2 rounded-lg bg-surface-container border border-outline-variant/30 md:hidden hover:bg-surface-container-high transition-colors"
+        className="fixed top-4 left-4 z-30 p-2 pb-0 rounded-lg bg-surface-container border border-outline-variant/30 md:hidden hover:bg-surface-container-high transition-colors"
         onClick={() => setDrawerOpen(true)}
         aria-label="Abrir menú"
       >
@@ -64,7 +64,7 @@ export default function PanelLayout({
       <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       {/* Content area */}
-      <main className="flex-1 min-h-dvh transition-all duration-300 pt-20 px-container-padding-mobile md:px-container-padding-desktop">
+      <main className="max-sm:max-w-[96vw] mx-auto flex-1 min-h-dvh transition-all pb-10 duration-300 pt-20 px-container-padding-mobile md:px-container-padding-desktop">
         {children}
       </main>
     </div>

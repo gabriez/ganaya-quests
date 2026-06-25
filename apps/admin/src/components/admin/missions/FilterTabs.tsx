@@ -1,13 +1,6 @@
 "use client";
 
-import type { MissionStatus } from "@shared/types";
-
-type FilterValue = "all" | MissionStatus;
-
-interface FilterTabsProps {
-  activeFilter: FilterValue;
-  onChange: (filter: FilterValue) => void;
-}
+import type { FilterTabsProps, FilterValue } from "@/types/missions/FilterTabs";
 
 const FILTER_OPTIONS: { value: FilterValue; label: string }[] = [
   { value: "all", label: "Todas" },
@@ -61,4 +54,3 @@ function FilterTabs({ activeFilter, onChange }: FilterTabsProps) {
 FilterTabs.displayName = "FilterTabs";
 
 export { FilterTabs };
-export type { FilterTabsProps, FilterValue };

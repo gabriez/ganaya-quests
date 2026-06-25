@@ -35,7 +35,7 @@ function MissionRow({
   return (
     <tr className="border-b border-outline-variant/20 last:border-b-0 hover:bg-surface-container-high/50 transition-colors">
       {/* Column 1: Title + Rewards */}
-      <td className="py-4 pr-4">
+      <td className="py-4 pr-4 pl-3">
         <div className="flex flex-col gap-1">
           <p className="text-body-md font-semibold text-on-surface">
             {mission.title}
@@ -82,7 +82,7 @@ function MissionRow({
       </td>
 
       {/* Column 4: Actions */}
-      <td className="py-4 text-right">
+      <td className="py-4 pr-14 text-right">
         <RowActions
           mission={mission}
           onEdit={onEdit}
