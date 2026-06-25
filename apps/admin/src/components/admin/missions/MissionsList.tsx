@@ -4,7 +4,7 @@ import { useCallback, useEffect, useReducer } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Pagination } from "@/components/ui/Pagination";
-import type { FilterValue } from "./FilterTabs";
+import type { FilterValue } from "@/types/missions/FilterTabs";
 import { FilterTabs } from "./FilterTabs";
 import {
   activateMission,
@@ -128,8 +128,9 @@ function MissionsList() {
     <div className="flex flex-col gap-6">
       {/* ── Top bar: Search + Create Button ── */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div className="w-full sm:max-w-sm">
+        <div className="w-full md:max-w-sm">
           <Input
+            id="search"
             icon="search"
             placeholder="Buscar misiones..."
             value={state.search}
@@ -140,7 +141,7 @@ function MissionsList() {
         <Button
           leadingIcon="add_circle"
           onClick={handleCreate}
-          className="whitespace-nowrap shrink-0"
+          className="whitespace-nowrap shrink-0 font-bold cursor-pointer max-sm:w-full text-sm bg-secondary hover:bg-secondary-fixed-dim"
         >
           Crear misión
         </Button>
@@ -165,6 +166,7 @@ function MissionsList() {
         </div>
 
         {/* Right sidebar */}
+        {/* TODO: Probably this will be deleted */}
         <aside className="w-full lg:w-80 shrink-0 flex flex-col gap-6">
           {/* Mission Assets placeholder */}
           <div className="rounded-lg border-2 border-dashed border-outline-variant/40 p-8 flex flex-col items-center text-center gap-3 transition-colors hover:border-primary/30">

@@ -7,6 +7,7 @@
  */
 
 import type { AdminMission, MissionStatus } from "@shared/types";
+import type { Dispatch } from "react";
 import { MockDataService } from "./MockDataService";
 
 /* ── Constants ── */
@@ -92,6 +93,10 @@ function applyFilters(
   return filtered;
 }
 
+function getTotalPages(length: number) {
+  return Math.max(1, Math.ceil(length / PAGE_SIZE));
+}
+
 /* ── Reducer ── */
 
 export function missionsReducer(
@@ -105,7 +110,7 @@ export function missionsReducer(
       return {
         ...state,
         missions,
-        totalPages: Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)),
+        totalPages: getTotalPages(filtered.length),
         loading: false,
         page: 1,
       };
@@ -117,7 +122,7 @@ export function missionsReducer(
       return {
         ...state,
         filter,
-        totalPages: Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)),
+        totalPages: getTotalPages(filtered.length),
         page: 1,
       };
     }
@@ -128,7 +133,7 @@ export function missionsReducer(
       return {
         ...state,
         search,
-        totalPages: Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)),
+        totalPages: getTotalPages(filtered.length),
         page: 1,
       };
     }
@@ -143,7 +148,7 @@ export function missionsReducer(
       return {
         ...state,
         missions,
-        totalPages: Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)),
+        totalPages: getTotalPages(filtered.length),
       };
     }
 
@@ -155,14 +160,14 @@ export function missionsReducer(
       return {
         ...state,
         missions,
-        totalPages: Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)),
+        totalPages: getTotalPages(filtered.length),
       };
     }
 
     case "DELETE_MISSION": {
       const missions = state.missions.filter((m) => m.id !== action.payload.id);
       const filtered = applyFilters(missions, state.filter, state.search);
-      const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+      const totalPages = getTotalPages(filtered.length);
       const page = Math.min(state.page, totalPages);
       return { ...state, missions, totalPages, page };
     }
@@ -187,13 +192,13 @@ export function getCurrentPageItems(
 
 /* ── Action dispatchers (thunk-like wrappers) ── */
 
-export async function loadMissions(dispatch: React.Dispatch<MissionsAction>) {
+export async function loadMissions(dispatch: Dispatch<MissionsAction>) {
   const missions = await MockDataService.getMissions();
   dispatch({ type: "LOAD_MISSIONS", payload: { missions } });
 }
 
 export async function createMission(
-  dispatch: React.Dispatch<MissionsAction>,
+  dispatch: Dispatch<MissionsAction>,
   data: Parameters<typeof MockDataService.createMission>[0],
 ) {
   const mission = await MockDataService.createMission(data);
@@ -201,7 +206,7 @@ export async function createMission(
 }
 
 export async function updateMission(
-  dispatch: React.Dispatch<MissionsAction>,
+  dispatch: Dispatch<MissionsAction>,
   id: string,
   data: Partial<AdminMission>,
 ) {
@@ -210,7 +215,7 @@ export async function updateMission(
 }
 
 export async function activateMission(
-  dispatch: React.Dispatch<MissionsAction>,
+  dispatch: Dispatch<MissionsAction>,
   id: string,
 ) {
   const mission = await MockDataService.activateMission(id);
@@ -218,7 +223,7 @@ export async function activateMission(
 }
 
 export async function cancelMission(
-  dispatch: React.Dispatch<MissionsAction>,
+  dispatch: Dispatch<MissionsAction>,
   id: string,
   reason: string,
 ) {
@@ -227,7 +232,7 @@ export async function cancelMission(
 }
 
 export async function deleteMission(
-  dispatch: React.Dispatch<MissionsAction>,
+  dispatch: Dispatch<MissionsAction>,
   id: string,
 ) {
   await MockDataService.deleteMission(id);

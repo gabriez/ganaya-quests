@@ -1,17 +1,8 @@
 "use client";
 
-import type { AdminMission } from "@shared/types";
-import { type DropdownItem, DropdownMenu } from "@/components/ui/DropdownMenu";
-
-interface RowActionsProps {
-  mission: AdminMission;
-  onEdit?: (id: string) => void;
-  onActivate?: (id: string) => void;
-  onCancel?: (id: string) => void;
-  onDelete?: (id: string) => void;
-  onView?: (id: string) => void;
-  onDuplicate?: (id: string) => void;
-}
+import { DropdownMenu } from "@/components/ui/DropdownMenu";
+import type { DropdownItem } from "@/types/DropdownMenu";
+import type { RowActionsProps } from "@/types/missions/RowActions";
 
 /**
  * RowActions — contextual action buttons per mission state.
@@ -128,4 +119,3 @@ function RowActions({
 RowActions.displayName = "RowActions";
 
 export { RowActions };
-export type { RowActionsProps };

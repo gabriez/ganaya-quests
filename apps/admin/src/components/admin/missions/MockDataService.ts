@@ -6,7 +6,7 @@
  * changing the reducer or component interface.
  */
 
-import type { AdminMission } from "@shared/types";
+import type { AdminMission, MissionStep } from "@shared/types";
 
 /* ── Helpers ── */
 
@@ -23,7 +23,7 @@ const missionStep = (
   id: string,
   title: string,
   order: number,
-): import("@shared/types").MissionStep => ({
+): MissionStep => ({
   id,
   title,
   verificationType: "submit_text",

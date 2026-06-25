@@ -64,7 +64,7 @@ export default function PanelLayout({
       <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       {/* Content area */}
-      <main className="flex-1 min-h-dvh transition-all duration-300 pt-20 px-container-padding-mobile md:px-container-padding-desktop">
+      <main className="max-sm:max-w-[96vw] mx-auto flex-1 min-h-dvh transition-all pb-10 duration-300 pt-20 px-container-padding-mobile md:px-container-padding-desktop">
         {children}
       </main>
     </div>
