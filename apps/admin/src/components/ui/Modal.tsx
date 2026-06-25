@@ -24,7 +24,6 @@ function Modal({ open, onClose, title, children, size = "md" }: ModalProps) {
   useEffect(() => {
     if (open) {
       previousActiveElement.current = document.activeElement;
-      document.body.style.overflow = "hidden";
       // Trigger mount animation on next frame
       requestAnimationFrame(() => setAnimating(true));
     } else {
@@ -92,14 +91,16 @@ function Modal({ open, onClose, title, children, size = "md" }: ModalProps) {
             type="button"
             onClick={onClose}
             aria-label="Cerrar"
-            className="text-outline hover:text-on-surface transition-colors p-1 rounded-lg hover:bg-white/5"
+            className="text-outline cursor-pointer p-2 hover:text-on-surface transition-colors rounded-lg hover:bg-white/5"
           >
-            <span className="material-symbols-outlined text-xl">Cerrar</span>
+            <span className="text-xl text-red-400">Cerrar</span>
           </button>
         </div>
 
         {/* Body */}
-        <div className="px-6 py-4 max-h-[70vh] overflow-y-auto">{children}</div>
+        <div className="px-6 py-4 max-h-[70vh] overflow-y-auto overflow-x-hidden">
+          {children}
+        </div>
       </div>
     </div>
   );

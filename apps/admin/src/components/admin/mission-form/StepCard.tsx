@@ -1,19 +1,9 @@
 "use client";
 
-import type { MissionStep, VerificationType } from "@shared/types";
+import type { VerificationType } from "@shared/types";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-
-interface StepCardProps {
-  step: MissionStep;
-  index: number;
-  totalSteps: number;
-  onChange: (updatedStep: MissionStep) => void;
-  onRemove: () => void;
-  onMoveUp?: () => void;
-  onMoveDown?: () => void;
-  errors?: Record<string, string>;
-}
+import type { StepCardProps } from "@/types/missions/StepBuilderTypes";
 
 const VERIFICATION_OPTIONS: { value: string; label: string }[] = [
   { value: "upload_image", label: "Subir imagen" },
@@ -110,7 +100,12 @@ function StepCard({
             </span>
           </button>
           {totalSteps <= 1 && (
-            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-surface-container-high text-on-surface text-label-sm rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+            <div
+              className="absolute bottom-full mb-2 left-[-200%] -translate-x-1/2
+              px-3 py-1.5 bg-surface-container-high text-on-surface
+              text-label-sm rounded-lg shadow-lg whitespace-nowrap opacity-0
+              group-hover:opacity-100 transition-opacity pointer-events-none z-100"
+            >
               La misión debe tener al menos un paso
             </div>
           )}
@@ -123,4 +118,3 @@ function StepCard({
 StepCard.displayName = "StepCard";
 
 export { StepCard };
-export type { StepCardProps };

@@ -1,18 +1,13 @@
 "use client";
 
-import type { AdminMission } from "@shared/types";
+import Image from "next/image";
 import { useRef } from "react";
-import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
-
-interface MissionFieldsProps {
-  mission: Partial<AdminMission>;
-  onChange: (field: string, value: unknown) => void;
-  errors?: Record<string, string>;
-  readOnly?: boolean;
-}
+import type { MissionFieldsProps } from "@/types/missions/MissionFieldTypes";
+import { FieldGroup } from "./FieldGroup";
+import { ReadOnlyFieldRow } from "./ReadOnlyFieldRow";
 
 const CATEGORY_OPTIONS: { value: string; label: string }[] = [
   { value: "daily", label: "Diaria" },
@@ -114,8 +109,14 @@ function MissionFields({
   return (
     <div className="flex flex-col gap-4">
       {/* Title */}
-      <FieldGroup label={FIELD_LABELS.title} required error={errors.title}>
+      <FieldGroup
+        htmlFor="title"
+        label={FIELD_LABELS.title}
+        required
+        error={errors.title}
+      >
         <Input
+          id="title"
           placeholder="Ej: Daily Login Streak"
           value={mission.title ?? ""}
           onChange={handleInputChange("title")}
@@ -125,11 +126,13 @@ function MissionFields({
 
       {/* Description */}
       <FieldGroup
+        htmlFor="description"
         label={FIELD_LABELS.description}
         required
         error={errors.description}
       >
         <Textarea
+          id="description"
           placeholder="Descripción de la misión"
           value={mission.description ?? ""}
           onChange={handleInputChange("description")}
@@ -138,11 +141,13 @@ function MissionFields({
 
       {/* Token reward */}
       <FieldGroup
+        htmlFor="tokenReward"
         label={FIELD_LABELS.tokenReward}
         required
         error={errors.tokenReward}
       >
         <Input
+          id="tokenReward"
           type="number"
           icon="payments"
           placeholder="0"
@@ -154,13 +159,18 @@ function MissionFields({
       </FieldGroup>
 
       {/* Bonus percent */}
-      <FieldGroup label={FIELD_LABELS.bonusPercent} error={errors.bonusPercent}>
+      <FieldGroup
+        htmlFor="bonusPercent"
+        label={FIELD_LABELS.bonusPercent}
+        error={errors.bonusPercent}
+      >
         <Input
           type="number"
           icon="percent"
           placeholder="0"
           min={0}
           max={100}
+          id="bonusPercent"
           value={mission.bonusPercent ?? ""}
           onChange={handleInputChange("bonusPercent")}
           wrapperClassName="w-full"
@@ -169,11 +179,13 @@ function MissionFields({
 
       {/* XP reward */}
       <FieldGroup
+        htmlFor="xpReward"
         label={FIELD_LABELS.xpReward}
         required
         error={errors.xpReward}
       >
         <Input
+          id="xpReward"
           type="number"
           icon="stars"
           placeholder="0"
@@ -186,11 +198,13 @@ function MissionFields({
 
       {/* Category */}
       <FieldGroup
+        htmlFor="category"
         label={FIELD_LABELS.category}
         required
         error={errors.category}
       >
         <Select
+          id="category"
           options={CATEGORY_OPTIONS}
           placeholder="Seleccionar categoría"
           value={mission.category ?? ""}
@@ -207,10 +221,12 @@ function MissionFields({
         {mission.coverImage ? (
           <div className="relative rounded-lg overflow-hidden border border-outline-variant/30">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
+              width={100}
+              height={100}
               src={mission.coverImage}
               alt="Cover preview"
-              className="w-full h-40 object-cover"
+              className="w-full h-auto"
             />
             <button
               type="button"
@@ -246,61 +262,6 @@ function MissionFields({
   );
 }
 
-/* ── Sub-components ── */
-
-/**
- * ReadOnlyFieldRow — label + value + "Bloqueado" badge.
- * Used inside readOnly mode for each mission field.
- */
-function ReadOnlyFieldRow({
-  label,
-  value,
-}: {
-  label: string;
-  value?: string | number;
-}) {
-  return (
-    <div className="flex items-start gap-3 py-2">
-      <span className="text-label-sm text-outline w-44 shrink-0 pt-0.5">
-        {label}
-      </span>
-      <div className="flex items-center gap-2 flex-1">
-        <span className="text-body-md text-on-surface">
-          {value != null ? String(value) : "—"}
-        </span>
-        <Badge variant="inactive">Bloqueado</Badge>
-      </div>
-    </div>
-  );
-}
-
-/**
- * FieldGroup — label + required marker + input + error message.
- */
-function FieldGroup({
-  label,
-  required = false,
-  error,
-  children,
-}: {
-  label: string;
-  required?: boolean;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <span className="text-label-sm text-on-surface-variant mb-1 block">
-        {label}
-        {required && <span className="text-error ml-0.5">*</span>}
-      </span>
-      {children}
-      {error && <p className="mt-1 text-label-sm text-error">{error}</p>}
-    </div>
-  );
-}
-
 MissionFields.displayName = "MissionFields";
 
 export { MissionFields };
-export type { MissionFieldsProps };

@@ -8,19 +8,13 @@ import type {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import type {
+  FormErrors,
+  MissionFormModalProps,
+  PartialAdminMission,
+} from "@/types/missions/MissionFormModalTypes";
 import { MissionFields } from "./MissionFields";
 import { StepBuilder } from "./StepBuilder";
-
-interface MissionFormModalProps {
-  open: boolean;
-  onClose: () => void;
-  /** null = create mode, AdminMission = edit/view mode */
-  mission: AdminMission | null;
-  onSave: (
-    data: Omit<AdminMission, "id" | "createdAt" | "participants">,
-    isCreate: boolean,
-  ) => void;
-}
 
 const DEFAULT_STEP: MissionStep = {
   id: "new_step_1",
@@ -29,10 +23,7 @@ const DEFAULT_STEP: MissionStep = {
   order: 1,
 };
 
-function createEmptyFormData(): Omit<
-  AdminMission,
-  "id" | "createdAt" | "participants"
-> {
+function createEmptyFormData(): PartialAdminMission {
   return {
     title: "",
     description: "",
@@ -43,17 +34,6 @@ function createEmptyFormData(): Omit<
     status: "inactive",
     steps: [{ ...DEFAULT_STEP, id: crypto.randomUUID() }],
   };
-}
-
-export interface FormErrors {
-  title?: string;
-  description?: string;
-  tokenReward?: string;
-  bonusPercent?: string;
-  xpReward?: string;
-  category?: string;
-  steps?: string;
-  [key: `step_${number}_title`]: string;
 }
 
 /**
@@ -72,7 +52,7 @@ function MissionFormModal({
   const readOnly = !isCreating && mission.status === "active";
 
   const isDirtyRef = useRef(false);
-  const [formData, setFormData] = useState<Partial<AdminMission>>(
+  const [formData, setFormData] = useState<PartialAdminMission>(
     isCreating ? createEmptyFormData() : { ...mission },
   );
   const [errors, setErrors] = useState<FormErrors>({});
@@ -182,10 +162,7 @@ function MissionFormModal({
     }));
 
     if (isCreating) {
-      const createData: Omit<
-        AdminMission,
-        "id" | "createdAt" | "participants"
-      > = {
+      const createData: PartialAdminMission = {
         title: (formData.title as string) || "",
         description: (formData.description as string) || "",
         tokenReward: Number(formData.tokenReward) || 0,
@@ -198,10 +175,7 @@ function MissionFormModal({
       };
       onSave(createData, true);
     } else {
-      const updateData: Omit<
-        AdminMission,
-        "id" | "createdAt" | "participants"
-      > = {
+      const updateData: PartialAdminMission = {
         title: formData.title as string,
         description: formData.description as string,
         tokenReward: Number(formData.tokenReward),
@@ -242,7 +216,13 @@ function MissionFormModal({
       <Modal
         open={open}
         onClose={handleClose}
-        title={isCreating ? "Nueva Misión" : "Editar Misión"}
+        title={
+          isCreating
+            ? "Nueva Misión"
+            : readOnly
+              ? "Detalles de misión"
+              : "Editar Misión"
+        }
         size="lg"
       >
         {/* Content Lock Banner */}
@@ -268,30 +248,41 @@ function MissionFormModal({
 
         {/* Step Builder — hidden in readOnly mode */}
         {!readOnly && (
-          <div className="mt-6 pt-6 border-t border-outline-variant/20">
-            <StepBuilder
-              steps={(formData.steps as MissionStep[]) || []}
-              onChange={handleStepsChange}
-              readOnly={readOnly}
-              errors={undefined}
-            />
-          </div>
+          <>
+            <div className="mt-6 pt-6 border-t border-outline-variant/20">
+              <StepBuilder
+                steps={(formData.steps as MissionStep[]) || []}
+                onChange={handleStepsChange}
+                readOnly={readOnly}
+                errors={undefined}
+              />
+            </div>
+            <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-outline-variant/20">
+              <Button
+                variant="ghost"
+                onClick={handleClose}
+                className="text-base"
+              >
+                Descartar
+              </Button>
+              <Button
+                variant="primary"
+                disabled={readOnly}
+                onClick={handleSave}
+                className="text-base"
+              >
+                Guardar
+              </Button>
+            </div>
+          </>
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-outline-variant/20">
-          <Button variant="ghost" onClick={handleClose}>
-            Descartar
-          </Button>
-          <Button variant="primary" disabled={readOnly} onClick={handleSave}>
-            Guardar
-          </Button>
-        </div>
       </Modal>
 
       {/* Discard Confirmation Dialog */}
       {showDiscardConfirm && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
           {/* Invisible backdrop */}
           <button
             type="button"
@@ -306,11 +297,19 @@ function MissionFormModal({
             <p className="text-body-md text-on-surface-variant mb-4">
               Los cambios sin guardar se perderán.
             </p>
-            <div className="flex items-center justify-end gap-3">
-              <Button variant="ghost" onClick={cancelDiscard}>
+            <div className="flex items-center justify-start gap-3">
+              <Button
+                variant="ghost"
+                className="text-base"
+                onClick={cancelDiscard}
+              >
                 Seguir editando
               </Button>
-              <Button variant="danger" onClick={confirmDiscard}>
+              <Button
+                variant="danger"
+                className="text-base"
+                onClick={confirmDiscard}
+              >
                 Descartar
               </Button>
             </div>
@@ -324,4 +323,3 @@ function MissionFormModal({
 MissionFormModal.displayName = "MissionFormModal";
 
 export { MissionFormModal };
-export type { MissionFormModalProps };

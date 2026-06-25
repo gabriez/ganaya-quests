@@ -2,14 +2,8 @@
 
 import type { MissionStep, VerificationType } from "@shared/types";
 import { Button } from "@/components/ui/Button";
+import type { StepBuilderProps } from "@/types/missions/StepBuilderTypes";
 import { StepCard } from "./StepCard";
-
-interface StepBuilderProps {
-  steps: MissionStep[];
-  onChange: (steps: MissionStep[]) => void;
-  readOnly?: boolean;
-  errors?: Record<string, Record<string, string>>;
-}
 
 /**
  * StepBuilder — lista de pasos con ordenamiento y agregado.
@@ -98,7 +92,7 @@ function StepBuilder({
         variant="ghost"
         leadingIcon="add"
         onClick={handleAdd}
-        className="self-start mt-2"
+        className="self-start mt-2 text-base"
       >
         Agregar paso
       </Button>

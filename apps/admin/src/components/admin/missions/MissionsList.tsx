@@ -223,7 +223,7 @@ function MissionsList() {
         {/* TODO: Probably this will be deleted */}
         <aside className="w-full lg:w-80 shrink-0 flex flex-col gap-6">
           {/* Mission Assets placeholder */}
-          <div className="rounded-lg border-2 border-dashed border-outline-variant/40 p-8 flex flex-col items-center text-center gap-3 transition-colors hover:border-primary/30">
+          {/*<div className="rounded-lg border-2 border-dashed border-outline-variant/40 p-8 flex flex-col items-center text-center gap-3 transition-colors hover:border-primary/30">
             <span className="material-symbols-outlined text-4xl text-outline/60">
               cloud_upload
             </span>
@@ -240,7 +240,7 @@ function MissionsList() {
             >
               Seleccionar archivos
             </button>
-          </div>
+          </div>*/}
 
           {/* Configuration hint */}
           <div className="rounded-lg bg-primary/5 border border-primary/15 p-4 flex items-start gap-3">
