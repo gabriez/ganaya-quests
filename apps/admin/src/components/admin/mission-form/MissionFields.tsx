@@ -204,7 +204,6 @@ function MissionFields({
         error={errors.category}
       >
         <Select
-          id="category"
           options={CATEGORY_OPTIONS}
           placeholder="Seleccionar categoría"
           value={mission.category ?? ""}
