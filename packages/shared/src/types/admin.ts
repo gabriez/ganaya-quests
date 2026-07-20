@@ -33,3 +33,35 @@ export interface AdminSidebarLink {
   icon: string;
   text: string;
 }
+
+/* ── Review types ── */
+
+export type ReviewStatus = "pending" | "approved" | "rejected";
+
+export interface ReviewSubmission {
+  id: string;
+  missionId: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  missionTitle: string;
+  missionCategory: MissionCategory;
+  submittedAt: string;
+  images?: string[];
+  userNote?: string;
+  status: ReviewStatus;
+}
+
+export interface VerificationCriterion {
+  label: string;
+  passed: boolean;
+}
+
+export interface ReviewVerdict {
+  submissionId: string;
+  reviewerId: string;
+  status: "approved" | "rejected";
+  notes?: string;
+  reviewedAt: string;
+  verificationCriteria?: VerificationCriterion[];
+}

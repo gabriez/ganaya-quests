@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+
 import type { IconsProps } from "./iconsProps";
 
 export type SidebarLinkType = {
@@ -13,5 +14,9 @@ export type {
   MissionCategory,
   MissionStatus,
   MissionStep,
+  ReviewStatus,
+  ReviewSubmission,
+  ReviewVerdict,
+  VerificationCriterion,
   VerificationType,
 } from "./admin";
