@@ -7,6 +7,7 @@ import type {
   HttpClientInterface,
   LoginResponse,
 } from "@shared/types/http";
+import type { BackendCreateMissionPayload, BackendMission, BackendMissionStatus } from "@shared/types/admin";
 
 import { API_URL, LOCAL_STORAGE_KEYS, ROUTES } from "@/constant";
 import type { AdminUser } from "@/types/auth";
@@ -53,7 +54,7 @@ export default class ApiAdminGanaya {
       message: "",
     };
     try {
-      const { data } = await httpClient.post({
+      const { data } = await this.httpClient.post({
         url: "/auth/login",
         body: { username, password },
       });
@@ -96,6 +97,69 @@ export default class ApiAdminGanaya {
     } catch {
       // Best-effort: cleanup proceeds regardless
     }
+  }
+
+  // 1.7 & 1.8 API Methods on ApiAdminGanaya
+  // 1.9 URL Paths: Use prefix `/api/admin/missions`
+
+  async createMission(payload: BackendCreateMissionPayload): Promise<BackendMission> {
+    const { data } = await this.httpClient.post({
+      url: "/api/admin/missions",
+      body: payload,
+    });
+    const response = data as ApiResponse<BackendMission>;
+    if (!response.data) throw new Error("Empty response from server");
+    return response.data;
+  }
+
+  async getMissions(params?: { take?: number; skip?: number }): Promise<BackendMission[]> {
+    let url = "/api/admin/missions";
+    if (params?.take !== undefined || params?.skip !== undefined) {
+      const searchParams = new URLSearchParams();
+      if (params.take !== undefined) searchParams.append("take", params.take.toString());
+      if (params.skip !== undefined) searchParams.append("skip", params.skip.toString());
+      if (searchParams.toString()) url += `?${searchParams.toString()}`;
+    }
+    const { data } = await this.httpClient.get({ url });
+    const response = data as ApiResponse<BackendMission[]>;
+    if (!response.data) throw new Error("Empty response from server");
+    return response.data;
+  }
+
+  async getMissionById(id: number): Promise<BackendMission> {
+    const { data } = await this.httpClient.get({ url: `/api/admin/missions/${id}` });
+    const response = data as ApiResponse<BackendMission>;
+    if (!response.data) throw new Error("Empty response from server");
+    return response.data;
+  }
+
+  async updateMission(id: number, payload: Partial<BackendCreateMissionPayload>): Promise<BackendMission> {
+    const { data } = await this.httpClient.patch({
+      url: `/api/admin/missions/${id}`,
+      body: payload,
+    });
+    const response = data as ApiResponse<BackendMission>;
+    if (!response.data) throw new Error("Empty response from server");
+    return response.data;
+  }
+
+  async activateMission(id: number): Promise<BackendMission> {
+    const { data } = await this.httpClient.post({
+      url: `/api/admin/missions/${id}/activate`,
+    });
+    const response = data as ApiResponse<BackendMission>;
+    if (!response.data) throw new Error("Empty response from server");
+    return response.data;
+  }
+
+  async updateMissionStatus(id: number, status: BackendMissionStatus): Promise<BackendMission> {
+    const { data } = await this.httpClient.patch({
+      url: `/api/admin/missions/${id}/status`,
+      body: { status },
+    });
+    const response = data as ApiResponse<BackendMission>;
+    if (!response.data) throw new Error("Empty response from server");
+    return response.data;
   }
 }
 
