@@ -6,9 +6,11 @@
  * mission CRUD / state transitions.
  */
 
-import type { AdminMission, MissionStatus } from "@shared/types";
 import type { Dispatch } from "react";
-import { MockDataService } from "./MockDataService";
+
+import type { AdminMission, MissionStatus } from "@shared/types";
+
+import { MissionsApiService } from "./MissionsApiService";
 
 /* ── Constants ── */
 
@@ -193,15 +195,15 @@ export function getCurrentPageItems(
 /* ── Action dispatchers (thunk-like wrappers) ── */
 
 export async function loadMissions(dispatch: Dispatch<MissionsAction>) {
-  const missions = await MockDataService.getMissions();
+  const missions = await MissionsApiService.getMissions();
   dispatch({ type: "LOAD_MISSIONS", payload: { missions } });
 }
 
 export async function createMission(
   dispatch: Dispatch<MissionsAction>,
-  data: Parameters<typeof MockDataService.createMission>[0],
+  data: Parameters<typeof MissionsApiService.createMission>[0],
 ) {
-  const mission = await MockDataService.createMission(data);
+  const mission = await MissionsApiService.createMission(data);
   dispatch({ type: "CREATE_MISSION", payload: { mission } });
 }
 
@@ -210,7 +212,7 @@ export async function updateMission(
   id: string,
   data: Partial<AdminMission>,
 ) {
-  const mission = await MockDataService.updateMission(id, data);
+  const mission = await MissionsApiService.updateMission(id, data);
   dispatch({ type: "UPDATE_MISSION", payload: { mission } });
 }
 
@@ -218,7 +220,7 @@ export async function activateMission(
   dispatch: Dispatch<MissionsAction>,
   id: string,
 ) {
-  const mission = await MockDataService.activateMission(id);
+  const mission = await MissionsApiService.activateMission(id);
   dispatch({ type: "UPDATE_MISSION", payload: { mission } });
 }
 
@@ -227,14 +229,20 @@ export async function cancelMission(
   id: string,
   reason: string,
 ) {
-  const mission = await MockDataService.cancelMission(id, reason);
+  const mission = await MissionsApiService.cancelMission(id, reason);
   dispatch({ type: "UPDATE_MISSION", payload: { mission } });
 }
 
+/**
+ * Delete a mission (soft delete — marks as CANCELLED via API).
+ * Dispatches UPDATE_MISSION since the API returns the updated mission.
+ */
 export async function deleteMission(
   dispatch: Dispatch<MissionsAction>,
   id: string,
 ) {
-  await MockDataService.deleteMission(id);
+  // MissionsApiService.deleteMission calls updateMissionStatus("CANCELLED")
+  // We dispatch UPDATE_MISSION to keep state consistent
+  await MissionsApiService.deleteMission(id);
   dispatch({ type: "DELETE_MISSION", payload: { id } });
 }
