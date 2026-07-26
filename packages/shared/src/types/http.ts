@@ -16,7 +16,7 @@ export interface GetParams {
   options?: AxiosRequestConfig;
 }
 
-export interface PostParams<T> {
+export interface PostParams<T = object> {
   url: string;
   body?: T;
   headers?: object;

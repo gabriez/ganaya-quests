@@ -28,16 +28,14 @@ const FIELD_LABELS: Record<string, string> = {
 /**
  * MissionFields — grupo de campos del formulario de misión.
  *
- * Incluye: título, descripción, recompensa (fichas y bono), XP,
- * categoría, e imagen de portada. Soporta modo readOnly (etiquetas
- * + badge "Bloqueado") para misiones activas.
+ * Recibe formik directamente y extrae values, setFieldValue y errors.
+ * Soporta modo readOnly (etiquetas + badge "Bloqueado") para misiones activas.
  */
 function MissionFields({
-  mission,
-  onChange,
-  errors = {},
+  formik,
   readOnly = false,
 }: MissionFieldsProps) {
+  const { values: mission, setFieldValue: onChange, errors } = formik;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange =
@@ -56,8 +54,9 @@ function MissionFields({
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (event) => {
-      onChange("coverImage", event.target?.result as string);
+    // handle images upload as multiform-part data
+    reader.onload = (_event) => {
+      onChange("coverImage", "/placeholder.jpeg");
     };
     reader.readAsDataURL(file);
   };

@@ -45,10 +45,8 @@ export default function AdminRootLayout({
       <body className="min-h-dvh flex flex-col bg-background text-on-surface antialiased">
         <Toaster position="top-right" theme="light" />
         <AuthAdminProvider>
-
           {children}
-          </AuthAdminProvider>
-
+        </AuthAdminProvider>
       </body>
     </html>
   );

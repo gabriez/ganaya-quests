@@ -7,6 +7,7 @@ import type {
   HttpClientInterface,
   LoginResponse,
 } from "@shared/types/http";
+import type { BackendCreateMissionPayload, BackendMission, BackendMissionStatus } from "@shared/types/admin";
 
 import { API_URL, LOCAL_STORAGE_KEYS, ROUTES } from "@/constant";
 import type { AdminUser } from "@/types/auth";
@@ -53,21 +54,23 @@ export default class ApiAdminGanaya {
       message: "",
     };
     try {
-      const { data } = await httpClient.post({
+      const { data } = await this.httpClient.post({
         url: "/auth/login",
         body: { username, password },
       });
 
-      // Backend now returns raw shape: { access_token, token_type, expires_in }
-      // NOT wrapped in { status, data } structure
+      // Backend returns: { access_token, token_type, expires_in }
       const rawResponse = data as ApiResponse<LoginResponse>;
 
-      if (rawResponse?.status) {
+      if (rawResponse?.data?.accessToken) {
         result.status = true;
+        result.data = rawResponse?.data;
+      } else {
+        result.message = "Credenciales inválidas";
       }
-      result.data = rawResponse.data;
 
-      result.message = rawResponse.message; // No message from raw response
+      result.message = rawResponse.message; //
+
       return result;
     } catch (error) {
       return handleApiError(error, result);
@@ -95,6 +98,152 @@ export default class ApiAdminGanaya {
       await this.httpClient.post({ url: "/auth/logout" });
     } catch {
       // Best-effort: cleanup proceeds regardless
+    }
+  }
+
+  // ── Admin Missions API ──
+
+  async createMission(
+    payload: BackendCreateMissionPayload,
+  ): Promise<ApiResponse<BackendMission>> {
+    const result: ApiResponse<BackendMission> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.post({
+        url: "/missions",
+        body: payload,
+      });
+      const response = data as ApiResponse<BackendMission>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  async getMissions(
+    params?: { take?: number; skip?: number },
+  ): Promise<ApiResponse<BackendMission[]>> {
+    const result: ApiResponse<BackendMission[]> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      let url = "/missions";
+      if (params?.take !== undefined || params?.skip !== undefined) {
+        const searchParams = new URLSearchParams();
+        if (params.take !== undefined)
+          searchParams.append("take", params.take.toString());
+        if (params.skip !== undefined)
+          searchParams.append("skip", params.skip.toString());
+        if (searchParams.toString()) url += `?${searchParams.toString()}`;
+      }
+      const { data } = await this.httpClient.get({ url });
+      const response = data as ApiResponse<BackendMission[]>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  async getMissionById(
+    id: number,
+  ): Promise<ApiResponse<BackendMission>> {
+    const result: ApiResponse<BackendMission> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.get({
+        url: `/missions/${id}`,
+      });
+      const response = data as ApiResponse<BackendMission>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  async updateMission(
+    id: number,
+    payload: Partial<BackendCreateMissionPayload>,
+  ): Promise<ApiResponse<BackendMission>> {
+    const result: ApiResponse<BackendMission> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.patch({
+        url: `/missions/${id}`,
+        body: payload,
+      });
+      const response = data as ApiResponse<BackendMission>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  async activateMission(
+    id: number,
+  ): Promise<ApiResponse<BackendMission>> {
+    const result: ApiResponse<BackendMission> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.post({
+        url: `/missions/${id}/activate`,
+      });
+      const response = data as ApiResponse<BackendMission>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  async updateMissionStatus(
+    id: number,
+    status: BackendMissionStatus,
+  ): Promise<ApiResponse<BackendMission>> {
+    const result: ApiResponse<BackendMission> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.patch({
+        url: `/missions/${id}/status`,
+        body: { status },
+      });
+      const response = data as ApiResponse<BackendMission>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
     }
   }
 }
