@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+
 import type { IconsProps } from "./iconsProps";
 
 export type SidebarLinkType = {
@@ -13,5 +14,17 @@ export type {
   MissionCategory,
   MissionStatus,
   MissionStep,
+  ReviewStatus,
+  ReviewSubmission,
+  ReviewVerdict,
+  VerificationCriterion,
   VerificationType,
+  BackendMission,
+  BackendMissionStep,
+  BackendCreateMissionPayload,
+  BackendMissionType,
+  BackendMissionStatus,
 } from "./admin";
+
+export type { AdminPlayer, PlayerStatus, PlayerCompletedMission, SuspensionReason } from "./admin";
+export { DEFAULT_SUSPENSION_REASONS } from "./admin";

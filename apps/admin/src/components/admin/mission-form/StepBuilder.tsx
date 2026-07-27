@@ -1,5 +1,6 @@
 "use client";
 
+import type { FormikErrors } from "formik";
 import type { MissionStep, VerificationType } from "@shared/types";
 import { Button } from "@/components/ui/Button";
 import type { StepBuilderProps } from "@/types/missions/StepBuilderTypes";
@@ -8,15 +9,31 @@ import { StepCard } from "./StepCard";
 /**
  * StepBuilder — lista de pasos con ordenamiento y agregado.
  *
+ * Recibe formik directamente y extrae steps, setFieldValue y errores.
  * Renderiza un StepCard por cada paso y un botón "Agregar paso"
  * al final. Reordena los pasos al mover arriba/abajo o eliminar.
  */
 function StepBuilder({
-  steps,
-  onChange,
+  formik,
   readOnly = false,
-  errors,
 }: StepBuilderProps) {
+  const steps = (formik.values.steps as MissionStep[]) || [];
+  const onChange = (newSteps: MissionStep[]) =>
+    formik.setFieldValue("steps", newSteps);
+
+  // Extract per-step errors from formik errors
+  const stepsErrors = formik.errors.steps;
+  const perStepErrors: Record<string, Record<string, string>> = {};
+  if (Array.isArray(stepsErrors)) {
+    stepsErrors.forEach(
+      (err: string | FormikErrors<MissionStep> | undefined, i: number) => {
+        if (err && typeof err === "object" && "title" in err) {
+          perStepErrors[i] = { title: err.title ?? "" };
+        }
+      },
+    );
+  }
+
   const handleChange = (index: number, updatedStep: MissionStep) => {
     const newSteps = steps.map((s, i) => (i === index ? updatedStep : s));
     onChange(newSteps);
@@ -84,7 +101,7 @@ function StepBuilder({
           onRemove={() => handleRemove(index)}
           onMoveUp={() => handleMoveUp(index)}
           onMoveDown={() => handleMoveDown(index)}
-          errors={errors?.[index]}
+          errors={perStepErrors[index]}
         />
       ))}
 
