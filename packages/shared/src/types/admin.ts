@@ -83,6 +83,7 @@ export interface ReviewSubmission {
 export interface VerificationCriterion {
   label: string;
   passed: boolean;
+  id: string
 }
 
 export interface ReviewVerdict {
