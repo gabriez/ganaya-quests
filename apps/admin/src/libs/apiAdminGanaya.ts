@@ -3,11 +3,15 @@ import { sileo } from "sileo";
 
 import HttpClient, { handleApiError } from "@shared/libs/httpClient";
 import type {
+  BackendCreateMissionPayload,
+  BackendMission,
+  BackendMissionStatus,
+} from "@shared/types/admin";
+import type {
   ApiResponse,
   HttpClientInterface,
   LoginResponse,
 } from "@shared/types/http";
-import type { BackendCreateMissionPayload, BackendMission, BackendMissionStatus } from "@shared/types/admin";
 
 import { API_URL, LOCAL_STORAGE_KEYS, ROUTES } from "@/constant";
 import type { AdminUser } from "@/types/auth";
@@ -126,9 +130,10 @@ export default class ApiAdminGanaya {
     }
   }
 
-  async getMissions(
-    params?: { take?: number; skip?: number },
-  ): Promise<ApiResponse<BackendMission[]>> {
+  async getMissions(params?: {
+    take?: number;
+    skip?: number;
+  }): Promise<ApiResponse<BackendMission[]>> {
     const result: ApiResponse<BackendMission[]> = {
       data: null,
       status: false,
@@ -155,9 +160,7 @@ export default class ApiAdminGanaya {
     }
   }
 
-  async getMissionById(
-    id: number,
-  ): Promise<ApiResponse<BackendMission>> {
+  async getMissionById(id: number): Promise<ApiResponse<BackendMission>> {
     const result: ApiResponse<BackendMission> = {
       data: null,
       status: false,
@@ -201,9 +204,7 @@ export default class ApiAdminGanaya {
     }
   }
 
-  async activateMission(
-    id: number,
-  ): Promise<ApiResponse<BackendMission>> {
+  async activateMission(id: number): Promise<ApiResponse<BackendMission>> {
     const result: ApiResponse<BackendMission> = {
       data: null,
       status: false,

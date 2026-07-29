@@ -21,7 +21,10 @@ const INITIAL_STATE: ReviewState = {
   modalOpen: false,
 };
 
-const EMPTY_MESSAGES: Record<string, { icon: string; title: string; desc: string }> = {
+const EMPTY_MESSAGES: Record<
+  string,
+  { icon: string; title: string; desc: string }
+> = {
   pending: {
     icon: "fact_check",
     title: "No hay tareas pendientes de revisión",
@@ -55,7 +58,11 @@ function ReviewList() {
   const handleSelect = useCallback(
     (id: string) => {
       const sub = state.submissions.find((s) => s.id === id);
-      if (sub) dispatch({ type: "SELECT_SUBMISSION", payload: { submission: sub as never } });
+      if (sub)
+        dispatch({
+          type: "SELECT_SUBMISSION",
+          payload: { submission: sub as never },
+        });
     },
     [state.submissions],
   );
@@ -101,7 +108,8 @@ function ReviewList() {
 
     // Date sort
     result = [...result].sort((a, b) => {
-      const diff = new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+      const diff =
+        new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
       return sortOrder === "newest" ? diff : -diff;
     });
 
@@ -120,7 +128,9 @@ function ReviewList() {
         activeTab={state.filter}
         category={state.category}
         sortOrder={state.sortOrder}
-        onTabChange={(tab) => dispatch({ type: "SET_FILTER", payload: { filter: tab } })}
+        onTabChange={(tab) =>
+          dispatch({ type: "SET_FILTER", payload: { filter: tab } })
+        }
         onCategoryChange={(cat) =>
           dispatch({ type: "SET_CATEGORY", payload: { category: cat } })
         }
@@ -131,8 +141,8 @@ function ReviewList() {
 
       {state.loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <SkeletonCard key={`skel-${i}`} />
+          {Array.from({ length: 6 }, () => crypto.randomUUID()).map((key) => (
+            <SkeletonCard key={key} />
           ))}
         </div>
       ) : filtered.length === 0 ? (

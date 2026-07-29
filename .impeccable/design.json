@@ -4,43 +4,243 @@
   "title": "Design System: Midnight Harbor",
   "extensions": {
     "colorMeta": {
-      "abismo-profundo": { "role": "neutral", "displayName": "Abismo Profundo", "canonical": "oklch(16% 0.04 265)", "tonalRamp": ["oklch(8% 0.02 265)", "oklch(12% 0.03 265)", "oklch(16% 0.04 265)", "oklch(24% 0.04 265)", "oklch(32% 0.04 265)", "oklch(45% 0.03 265)", "oklch(55% 0.03 265)", "oklch(70% 0.02 265)"] },
-      "superficie-container": { "role": "neutral", "displayName": "Superficie Container", "canonical": "oklch(20% 0.035 270)", "tonalRamp": ["oklch(10% 0.02 270)", "oklch(15% 0.03 270)", "oklch(20% 0.035 270)", "oklch(27% 0.04 270)", "oklch(35% 0.04 270)", "oklch(46% 0.03 270)", "oklch(56% 0.03 270)", "oklch(72% 0.02 270)"] },
-      "superficie-container-high": { "role": "neutral", "displayName": "Superficie Container High", "canonical": "oklch(25% 0.04 270)", "tonalRamp": ["oklch(12% 0.02 270)", "oklch(18% 0.03 270)", "oklch(25% 0.04 270)", "oklch(32% 0.04 270)", "oklch(40% 0.04 270)", "oklch(50% 0.03 270)", "oklch(60% 0.03 270)", "oklch(75% 0.02 270)"] },
-      "on-surface": { "role": "neutral", "displayName": "On Surface", "canonical": "oklch(90% 0.02 275)", "tonalRamp": ["oklch(40% 0.02 275)", "oklch(55% 0.02 275)", "oklch(70% 0.02 275)", "oklch(82% 0.02 275)", "oklch(90% 0.02 275)", "oklch(93% 0.01 275)", "oklch(96% 0.01 275)", "oklch(99% 0.005 275)"] },
-      "on-surface-variant": { "role": "neutral", "displayName": "On Surface Variant", "canonical": "oklch(78% 0.025 255)", "tonalRamp": ["oklch(35% 0.02 255)", "oklch(50% 0.02 255)", "oklch(65% 0.025 255)", "oklch(78% 0.025 255)", "oklch(86% 0.02 255)", "oklch(91% 0.015 255)", "oklch(95% 0.01 255)", "oklch(99% 0.005 255)"] },
-      "neon-artico": { "role": "primary", "displayName": "Neón Ártico", "canonical": "oklch(82% 0.07 235)", "tonalRamp": ["oklch(35% 0.07 235)", "oklch(48% 0.08 235)", "oklch(60% 0.09 235)", "oklch(70% 0.08 235)", "oklch(82% 0.07 235)", "oklch(88% 0.05 235)", "oklch(94% 0.03 235)", "oklch(98% 0.01 235)"] },
-      "oro-vespertino": { "role": "secondary", "displayName": "Oro Vespertino", "canonical": "oklch(80% 0.12 85)", "tonalRamp": ["oklch(35% 0.10 85)", "oklch(48% 0.12 85)", "oklch(60% 0.14 85)", "oklch(70% 0.13 85)", "oklch(80% 0.12 85)", "oklch(88% 0.08 85)", "oklch(94% 0.05 85)", "oklch(98% 0.02 85)"] },
-      "luz-de-luna": { "role": "tertiary", "displayName": "Luz de Luna", "canonical": "oklch(82% 0.05 285)", "tonalRamp": ["oklch(35% 0.05 285)", "oklch(48% 0.06 285)", "oklch(60% 0.06 285)", "oklch(70% 0.055 285)", "oklch(82% 0.05 285)", "oklch(88% 0.035 285)", "oklch(94% 0.02 285)", "oklch(98% 0.01 285)"] },
-      "error": { "role": "primary", "displayName": "Error", "canonical": "oklch(80% 0.09 30)", "tonalRamp": ["oklch(35% 0.08 30)", "oklch(48% 0.09 30)", "oklch(60% 0.10 30)", "oklch(70% 0.10 30)", "oklch(80% 0.09 30)", "oklch(88% 0.06 30)", "oklch(94% 0.04 30)", "oklch(98% 0.02 30)"] }
+      "abismo-profundo": {
+        "role": "neutral",
+        "displayName": "Abismo Profundo",
+        "canonical": "oklch(16% 0.04 265)",
+        "tonalRamp": [
+          "oklch(8% 0.02 265)",
+          "oklch(12% 0.03 265)",
+          "oklch(16% 0.04 265)",
+          "oklch(24% 0.04 265)",
+          "oklch(32% 0.04 265)",
+          "oklch(45% 0.03 265)",
+          "oklch(55% 0.03 265)",
+          "oklch(70% 0.02 265)"
+        ]
+      },
+      "superficie-container": {
+        "role": "neutral",
+        "displayName": "Superficie Container",
+        "canonical": "oklch(20% 0.035 270)",
+        "tonalRamp": [
+          "oklch(10% 0.02 270)",
+          "oklch(15% 0.03 270)",
+          "oklch(20% 0.035 270)",
+          "oklch(27% 0.04 270)",
+          "oklch(35% 0.04 270)",
+          "oklch(46% 0.03 270)",
+          "oklch(56% 0.03 270)",
+          "oklch(72% 0.02 270)"
+        ]
+      },
+      "superficie-container-high": {
+        "role": "neutral",
+        "displayName": "Superficie Container High",
+        "canonical": "oklch(25% 0.04 270)",
+        "tonalRamp": [
+          "oklch(12% 0.02 270)",
+          "oklch(18% 0.03 270)",
+          "oklch(25% 0.04 270)",
+          "oklch(32% 0.04 270)",
+          "oklch(40% 0.04 270)",
+          "oklch(50% 0.03 270)",
+          "oklch(60% 0.03 270)",
+          "oklch(75% 0.02 270)"
+        ]
+      },
+      "on-surface": {
+        "role": "neutral",
+        "displayName": "On Surface",
+        "canonical": "oklch(90% 0.02 275)",
+        "tonalRamp": [
+          "oklch(40% 0.02 275)",
+          "oklch(55% 0.02 275)",
+          "oklch(70% 0.02 275)",
+          "oklch(82% 0.02 275)",
+          "oklch(90% 0.02 275)",
+          "oklch(93% 0.01 275)",
+          "oklch(96% 0.01 275)",
+          "oklch(99% 0.005 275)"
+        ]
+      },
+      "on-surface-variant": {
+        "role": "neutral",
+        "displayName": "On Surface Variant",
+        "canonical": "oklch(78% 0.025 255)",
+        "tonalRamp": [
+          "oklch(35% 0.02 255)",
+          "oklch(50% 0.02 255)",
+          "oklch(65% 0.025 255)",
+          "oklch(78% 0.025 255)",
+          "oklch(86% 0.02 255)",
+          "oklch(91% 0.015 255)",
+          "oklch(95% 0.01 255)",
+          "oklch(99% 0.005 255)"
+        ]
+      },
+      "neon-artico": {
+        "role": "primary",
+        "displayName": "Neón Ártico",
+        "canonical": "oklch(82% 0.07 235)",
+        "tonalRamp": [
+          "oklch(35% 0.07 235)",
+          "oklch(48% 0.08 235)",
+          "oklch(60% 0.09 235)",
+          "oklch(70% 0.08 235)",
+          "oklch(82% 0.07 235)",
+          "oklch(88% 0.05 235)",
+          "oklch(94% 0.03 235)",
+          "oklch(98% 0.01 235)"
+        ]
+      },
+      "oro-vespertino": {
+        "role": "secondary",
+        "displayName": "Oro Vespertino",
+        "canonical": "oklch(80% 0.12 85)",
+        "tonalRamp": [
+          "oklch(35% 0.10 85)",
+          "oklch(48% 0.12 85)",
+          "oklch(60% 0.14 85)",
+          "oklch(70% 0.13 85)",
+          "oklch(80% 0.12 85)",
+          "oklch(88% 0.08 85)",
+          "oklch(94% 0.05 85)",
+          "oklch(98% 0.02 85)"
+        ]
+      },
+      "luz-de-luna": {
+        "role": "tertiary",
+        "displayName": "Luz de Luna",
+        "canonical": "oklch(82% 0.05 285)",
+        "tonalRamp": [
+          "oklch(35% 0.05 285)",
+          "oklch(48% 0.06 285)",
+          "oklch(60% 0.06 285)",
+          "oklch(70% 0.055 285)",
+          "oklch(82% 0.05 285)",
+          "oklch(88% 0.035 285)",
+          "oklch(94% 0.02 285)",
+          "oklch(98% 0.01 285)"
+        ]
+      },
+      "error": {
+        "role": "primary",
+        "displayName": "Error",
+        "canonical": "oklch(80% 0.09 30)",
+        "tonalRamp": [
+          "oklch(35% 0.08 30)",
+          "oklch(48% 0.09 30)",
+          "oklch(60% 0.10 30)",
+          "oklch(70% 0.10 30)",
+          "oklch(80% 0.09 30)",
+          "oklch(88% 0.06 30)",
+          "oklch(94% 0.04 30)",
+          "oklch(98% 0.02 30)"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headlines and main section titles only. Never in cards, buttons, or labels." },
-      "headline": { "displayName": "Headline", "purpose": "Section headings. Mobile variant at 24px/32px." },
-      "title": { "displayName": "Title", "purpose": "Card titles, modal headers, panel titles." },
-      "body": { "displayName": "Body", "purpose": "Running text, card content, table cells. Max 75ch in prose." },
-      "label": { "displayName": "Label", "purpose": "Button text, form labels, active tabs." },
-      "labelSmall": { "displayName": "Label Small", "purpose": "Badges, status pills, metadata, timestamps. Uppercase with extra tracking." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines and main section titles only. Never in cards, buttons, or labels."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings. Mobile variant at 24px/32px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card titles, modal headers, panel titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text, card content, table cells. Max 75ch in prose."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Button text, form labels, active tabs."
+      },
+      "labelSmall": {
+        "displayName": "Label Small",
+        "purpose": "Badges, status pills, metadata, timestamps. Uppercase with extra tracking."
+      }
     },
     "shadows": [
-      { "name": "glow-primary-sm", "value": "0 0 12px rgba(56, 189, 248, 0.1)", "purpose": "Small primary glow for pagination active and small active indicators." },
-      { "name": "glow-primary", "value": "0 0 20px rgba(56, 189, 248, 0.15)", "purpose": "Primary glow for hover states on primary buttons and active badges." },
-      { "name": "glow-gold-sm", "value": "0 0 12px rgba(255, 198, 64, 0.2)", "purpose": "Small gold glow for reward badges." },
-      { "name": "glow-gold", "value": "0 0 20px rgba(255, 198, 64, 0.25)", "purpose": "Gold glow for reward claims, mission complete states, CTA buttons." },
-      { "name": "modal-glow", "value": "0 0 40px rgba(56, 189, 248, 0.1)", "purpose": "Ambient primary glow behind modal panels." }
+      {
+        "name": "glow-primary-sm",
+        "value": "0 0 12px rgba(56, 189, 248, 0.1)",
+        "purpose": "Small primary glow for pagination active and small active indicators."
+      },
+      {
+        "name": "glow-primary",
+        "value": "0 0 20px rgba(56, 189, 248, 0.15)",
+        "purpose": "Primary glow for hover states on primary buttons and active badges."
+      },
+      {
+        "name": "glow-gold-sm",
+        "value": "0 0 12px rgba(255, 198, 64, 0.2)",
+        "purpose": "Small gold glow for reward badges."
+      },
+      {
+        "name": "glow-gold",
+        "value": "0 0 20px rgba(255, 198, 64, 0.25)",
+        "purpose": "Gold glow for reward claims, mission complete states, CTA buttons."
+      },
+      {
+        "name": "modal-glow",
+        "value": "0 0 40px rgba(56, 189, 248, 0.1)",
+        "purpose": "Ambient primary glow behind modal panels."
+      }
     ],
     "motion": [
-      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Premium exit easing for modals and panel reveals." },
-      { "name": "ease-out", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Standard easing for state transitions (hover, focus, scale)." },
-      { "name": "duration-fast", "value": "150ms", "purpose": "Hover and active state transitions." },
-      { "name": "duration-standard", "value": "200ms", "purpose": "Modal enter, panel expand, standard UI transitions." },
-      { "name": "duration-slow", "value": "300ms", "purpose": "Sidebar collapse/expand, complex layout transitions." }
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Premium exit easing for modals and panel reveals."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Standard easing for state transitions (hover, focus, scale)."
+      },
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "Hover and active state transitions."
+      },
+      {
+        "name": "duration-standard",
+        "value": "200ms",
+        "purpose": "Modal enter, panel expand, standard UI transitions."
+      },
+      {
+        "name": "duration-slow",
+        "value": "300ms",
+        "purpose": "Sidebar collapse/expand, complex layout transitions."
+      }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px", "purpose": "Mobile breakpoint threshold." },
-      { "name": "md", "value": "768px", "purpose": "Tablet / mobile-hamburger to sidebar switch." },
-      { "name": "lg", "value": "1024px", "purpose": "Desktop layout (sidebar + full content)." },
-      { "name": "xl", "value": "1280px", "purpose": "Max content width for admin panels." }
+      {
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Mobile breakpoint threshold."
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "purpose": "Tablet / mobile-hamburger to sidebar switch."
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "purpose": "Desktop layout (sidebar + full content)."
+      },
+      {
+        "name": "xl",
+        "value": "1280px",
+        "purpose": "Max content width for admin panels."
+      }
     ]
   },
   "components": [
@@ -120,9 +320,21 @@
       "Consistente sobre sorpresivo: el usuario navega entre módulos que se sienten del mismo lugar"
     ],
     "rules": [
-      { "name": "La Regla de Rareza", "body": "El Oro Vespertino aparece en menos del 10% de cualquier pantalla. Su presencia indica una acción o estado de alto valor. Si el oro está en más de un lugar, pierde su peso semántico.", "section": "colors" },
-      { "name": "La Regla de la Jerarquía Silenciosa", "body": "Nunca uses Display para un título de card ni Headline para un botón. Cada nivel tipográfico tiene su contexto; romper la escala erosiona la jerarquía visual.", "section": "typography" },
-      { "name": "La Regla de la Sombra Cero", "body": "No uses sombras reales (box-shadow con negro) para establecer elevación. Usa tonos de superficie. Los únicos box-shadow permitidos son los glows de acento (primary y oro).", "section": "elevation" }
+      {
+        "name": "La Regla de Rareza",
+        "body": "El Oro Vespertino aparece en menos del 10% de cualquier pantalla. Su presencia indica una acción o estado de alto valor. Si el oro está en más de un lugar, pierde su peso semántico.",
+        "section": "colors"
+      },
+      {
+        "name": "La Regla de la Jerarquía Silenciosa",
+        "body": "Nunca uses Display para un título de card ni Headline para un botón. Cada nivel tipográfico tiene su contexto; romper la escala erosiona la jerarquía visual.",
+        "section": "typography"
+      },
+      {
+        "name": "La Regla de la Sombra Cero",
+        "body": "No uses sombras reales (box-shadow con negro) para establecer elevación. Usa tonos de superficie. Los únicos box-shadow permitidos son los glows de acento (primary y oro).",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Usá glows (primary u oro) para indicar elementos activos y recompensas en lugar de sombras.",

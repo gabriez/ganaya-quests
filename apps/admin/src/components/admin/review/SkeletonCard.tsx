@@ -1,4 +1,3 @@
-
 export function SkeletonCard() {
   return (
     <div className="bg-surface-container-high rounded-xl p-4 flex flex-col gap-3 animate-pulse">

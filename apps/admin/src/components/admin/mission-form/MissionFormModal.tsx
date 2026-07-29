@@ -207,7 +207,6 @@ function MissionFormModal({
                 <Button
                   variant="primary"
                   disabled={readOnly}
-
                   className="text-base cursor-pointer"
                   type="submit"
                 >

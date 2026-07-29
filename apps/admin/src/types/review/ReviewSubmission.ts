@@ -1,6 +1,6 @@
 import type {
-  ReviewSubmission,
   ReviewStatus,
+  ReviewSubmission,
   VerificationCriterion,
 } from "@shared/types";
 
@@ -13,7 +13,9 @@ export interface ReviewableCardProps {
 }
 
 export interface ReviewModalProps {
-  submission: ReviewSubmission & { verificationCriteria?: VerificationCriterion[] };
+  submission: ReviewSubmission & {
+    verificationCriteria?: VerificationCriterion[];
+  };
   open: boolean;
   onClose: () => void;
   onApprove: (id: string, notes?: string) => void;

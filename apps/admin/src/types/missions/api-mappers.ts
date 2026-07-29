@@ -99,7 +99,8 @@ export function mapBackendToAdmin(
     coverImage: backendMission.imageUrl,
     participants: 0, // Not provided by backend list endpoint
     createdAt: backendMission.activatedAt ?? "",
-    cancelReason: backendMission.status === "CANCELLED" ? "Cancelled via admin" : undefined,
+    cancelReason:
+      backendMission.status === "CANCELLED" ? "Cancelled via admin" : undefined,
   };
 }
 

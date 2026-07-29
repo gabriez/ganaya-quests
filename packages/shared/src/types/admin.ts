@@ -3,7 +3,11 @@ export type MissionCategory = "daily" | "weekly" | "fixed" | "special_event";
 export type VerificationType = "upload_image" | "submit_text" | "manual_review";
 
 export type BackendMissionType = "DAILY" | "WEEKLY" | "FIXED";
-export type BackendMissionStatus = "INACTIVE" | "ACTIVE" | "COMPLETED" | "CANCELLED";
+export type BackendMissionStatus =
+  | "INACTIVE"
+  | "ACTIVE"
+  | "COMPLETED"
+  | "CANCELLED";
 
 export interface BackendMissionStep {
   id: number;
@@ -28,7 +32,10 @@ export interface BackendMission {
   steps?: BackendMissionStep[];
 }
 
-export type BackendCreateMissionPayload = Omit<BackendMission, "id" | "status" | "activatedAt" | "expiresAt" | "steps">;
+export type BackendCreateMissionPayload = Omit<
+  BackendMission,
+  "id" | "status" | "activatedAt" | "expiresAt" | "steps"
+>;
 
 export interface MissionStep {
   id: string;
@@ -74,6 +81,7 @@ export interface ReviewSubmission {
   userAvatar?: string;
   missionTitle: string;
   missionCategory: MissionCategory;
+  missionDescription?: string;
   submittedAt: string;
   images?: string[];
   userNote?: string;
@@ -81,9 +89,11 @@ export interface ReviewSubmission {
 }
 
 export interface VerificationCriterion {
+  id: string;
   label: string;
+  description?: string;
+  images?: string[];
   passed: boolean;
-  id: string
 }
 
 export interface ReviewVerdict {
@@ -95,12 +105,12 @@ export interface ReviewVerdict {
   verificationCriteria?: VerificationCriterion[];
 }
 
-export type PlayerStatus = 'active' | 'suspended';
+export type PlayerStatus = "active" | "suspended";
 
 export interface AdminPlayer {
   id: string;
   username: string;
-  registeredAt: string;   // ISO 8601
+  registeredAt: string; // ISO 8601
   status: PlayerStatus;
   totalTokens: number;
   completedMissionsCount: number;
@@ -110,7 +120,7 @@ export interface AdminPlayer {
 export interface PlayerCompletedMission {
   id: string;
   title: string;
-  completedAt: string;    // ISO 8601
+  completedAt: string; // ISO 8601
   rewardTokens: number;
 }
 
@@ -121,8 +131,8 @@ export interface SuspensionReason {
 }
 
 export const DEFAULT_SUSPENSION_REASONS: SuspensionReason[] = [
-  { id: 'inactivity', label: 'Inactividad prolongada', isCustom: false },
-  { id: 'policy_violation', label: 'Violación de políticas', isCustom: false },
-  { id: 'fraud_suspicion', label: 'Sospecha de fraude', isCustom: false },
-  { id: 'other', label: 'Otro', isCustom: true },
+  { id: "inactivity", label: "Inactividad prolongada", isCustom: false },
+  { id: "policy_violation", label: "Violación de políticas", isCustom: false },
+  { id: "fraud_suspicion", label: "Sospecha de fraude", isCustom: false },
+  { id: "other", label: "Otro", isCustom: true },
 ];

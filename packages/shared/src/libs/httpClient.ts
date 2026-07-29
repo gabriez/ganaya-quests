@@ -10,7 +10,7 @@ import type {
   PutParams,
 } from "../types/http";
 
-export class HttpClient implements HttpClientInterface{
+export class HttpClient implements HttpClientInterface {
   private readonly default_headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -123,7 +123,7 @@ export function handleApiError<T>(
   result: ApiResponse<T>,
 ): ApiResponse<T> {
   const axiosError = error as AxiosError<{ message?: string }>;
-  console.log(axiosError)
+  console.log(axiosError);
   const message = axiosError.response?.data?.message;
   result.message = message || "Ocurrió un error inesperado.";
   return result;

@@ -1,7 +1,9 @@
 "use client";
 
 import type { FormikErrors } from "formik";
+
 import type { MissionStep, VerificationType } from "@shared/types";
+
 import { Button } from "@/components/ui/Button";
 import type { StepBuilderProps } from "@/types/missions/StepBuilderTypes";
 import { StepCard } from "./StepCard";
@@ -13,10 +15,7 @@ import { StepCard } from "./StepCard";
  * Renderiza un StepCard por cada paso y un botón "Agregar paso"
  * al final. Reordena los pasos al mover arriba/abajo o eliminar.
  */
-function StepBuilder({
-  formik,
-  readOnly = false,
-}: StepBuilderProps) {
+function StepBuilder({ formik, readOnly = false }: StepBuilderProps) {
   const steps = (formik.values.steps as MissionStep[]) || [];
   const onChange = (newSteps: MissionStep[]) =>
     formik.setFieldValue("steps", newSteps);

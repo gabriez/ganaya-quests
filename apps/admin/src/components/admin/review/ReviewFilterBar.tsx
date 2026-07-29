@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
+
 import type { MissionCategory } from "@shared/types";
+
 import type { ReviewFilter } from "@/types/review/ReviewSubmission";
 
 const TABS: { value: ReviewFilter; label: string }[] = [
@@ -40,7 +42,7 @@ function ReviewFilterBar({
   onCategoryChange,
   onSortChange,
 }: ReviewFilterBarProps) {
-  const totalCounts = useMemo(() => {
+  const _totalCounts = useMemo(() => {
     return { pending: 0, approved: 0, rejected: 0 };
     // Counts come from parent; mock for now
   }, []);

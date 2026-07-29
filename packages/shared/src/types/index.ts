@@ -10,21 +10,23 @@ export type SidebarLinkType = {
 
 export type {
   AdminMission,
+  AdminPlayer,
   AdminSidebarLink,
+  BackendCreateMissionPayload,
+  BackendMission,
+  BackendMissionStatus,
+  BackendMissionStep,
+  BackendMissionType,
   MissionCategory,
   MissionStatus,
   MissionStep,
+  PlayerCompletedMission,
+  PlayerStatus,
   ReviewStatus,
   ReviewSubmission,
   ReviewVerdict,
+  SuspensionReason,
   VerificationCriterion,
   VerificationType,
-  BackendMission,
-  BackendMissionStep,
-  BackendCreateMissionPayload,
-  BackendMissionType,
-  BackendMissionStatus,
 } from "./admin";
-
-export type { AdminPlayer, PlayerStatus, PlayerCompletedMission, SuspensionReason } from "./admin";
 export { DEFAULT_SUSPENSION_REASONS } from "./admin";

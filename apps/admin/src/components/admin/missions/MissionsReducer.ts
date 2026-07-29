@@ -226,7 +226,7 @@ export async function createMission(
   data: Parameters<typeof mapAdminToBackend>[0],
 ): Promise<boolean> {
   const payload = mapAdminToBackend(data);
-  console.log(payload)
+  console.log(payload);
   const result = await apiAdminGanaya.createMission(payload);
 
   if (result.status && result.data) {

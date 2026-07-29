@@ -37,7 +37,11 @@ export function reviewReducer(
 ): ReviewState {
   switch (action.type) {
     case "LOAD_SUBMISSIONS":
-      return { ...state, submissions: action.payload.submissions, loading: false };
+      return {
+        ...state,
+        submissions: action.payload.submissions,
+        loading: false,
+      };
     case "SET_FILTER":
       return { ...state, filter: action.payload.filter };
     case "SET_CATEGORY":
@@ -47,13 +51,19 @@ export function reviewReducer(
     case "SET_SEARCH":
       return { ...state, search: action.payload.search };
     case "SELECT_SUBMISSION":
-      return { ...state, selectedSubmission: action.payload.submission, modalOpen: true };
+      return {
+        ...state,
+        selectedSubmission: action.payload.submission,
+        modalOpen: true,
+      };
     case "CLOSE_MODAL":
       return { ...state, modalOpen: false, selectedSubmission: null };
     case "UPDATE_STATUS":
       return {
         ...state,
-        submissions: state.submissions.filter((s) => s.id !== action.payload.id),
+        submissions: state.submissions.filter(
+          (s) => s.id !== action.payload.id,
+        ),
         modalOpen: false,
         selectedSubmission: null,
       };

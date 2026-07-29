@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { AdminSidebar } from "@/components/admin/layout/AdminSidebar";
 import { MobileDrawer } from "@/components/admin/layout/MobileDrawer";
+
 /**
  * PanelLayout — authenticated admin shell for all /panel/* routes.
  *

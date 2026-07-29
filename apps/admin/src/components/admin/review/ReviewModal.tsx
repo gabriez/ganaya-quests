@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+
 import type { MissionCategory } from "@shared/types";
-import type { ReviewModalProps } from "@/types/review/ReviewSubmission";
+
 import { Modal } from "@/components/ui/Modal";
 import { Textarea } from "@/components/ui/Textarea";
+import type { ReviewModalProps } from "@/types/review/ReviewSubmission";
 import { ReviewStatusBadge } from "./ReviewStatusBadge";
-import Image from "next/image";
+import { ReviewStepCard } from "./ReviewStepCard";
 
 const categoryLabels: Record<MissionCategory, string> = {
   daily: "Diaria",
@@ -26,7 +29,12 @@ function relativeTime(iso: string): string {
 }
 
 function getInitials(name: string): string {
-  return name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 }
 
 function ReviewModal({
@@ -38,25 +46,75 @@ function ReviewModal({
 }: ReviewModalProps) {
   const [notes, setNotes] = useState("");
   const [error, setError] = useState("");
+  const [fichasAmount, setFichasAmount] = useState("");
+  const [criteriaVerdicts, setCriteriaVerdicts] = useState<
+    Record<string, boolean | null>
+  >({});
+
+  const prevOpen = useRef(open);
+  const prevSubmissionId = useRef(submission.id);
+  useEffect(() => {
+    const justOpened = open && !prevOpen.current;
+    const submissionChanged =
+      open && prevOpen.current && submission.id !== prevSubmissionId.current;
+    if (justOpened || submissionChanged) {
+      const initial: Record<string, boolean | null> = {};
+      submission.verificationCriteria?.forEach((c) => {
+        initial[c.id] = null;
+      });
+      setCriteriaVerdicts(initial);
+      setNotes("");
+      setError("");
+      setFichasAmount("");
+    }
+    prevOpen.current = open;
+    prevSubmissionId.current = submission.id;
+  }, [open, submission.id, submission.verificationCriteria]);
+
+  const reviewedCount = Object.values(criteriaVerdicts).filter(
+    (v) => v !== null,
+  ).length;
+  const totalCriteria = submission.verificationCriteria?.length ?? 0;
+  const allReviewed = reviewedCount === totalCriteria && totalCriteria > 0;
 
   const handleReject = () => {
-    if (!notes.trim()) { setError("El motivo es obligatorio para rechazar"); return; }
+    if (!notes.trim()) {
+      setError("El motivo es obligatorio para rechazar");
+      return;
+    }
     setError("");
     onReject(submission.id, notes.trim());
     setNotes("");
   };
 
   const handleApprove = () => {
+    if (totalCriteria > 0 && !allReviewed) {
+      setError("Revisá todos los pasos antes de aprobar");
+      return;
+    }
+    if (!fichasAmount.trim()) {
+      setError("Cargá las fichas antes de aprobar");
+      return;
+    }
     setError("");
     onApprove(submission.id, notes.trim() || undefined);
     setNotes("");
   };
 
-  const handleClose = () => { setError(""); setNotes(""); onClose(); };
+  const handleClose = () => {
+    setError("");
+    setNotes("");
+    onClose();
+  };
+
+  const setVerdict = (id: string, value: boolean) => {
+    setCriteriaVerdicts((prev) => ({ ...prev, [id]: value }));
+  };
 
   return (
     <Modal open={open} onClose={handleClose} title="Revisar tarea" size="lg">
       <div className="flex flex-col gap-5">
+        {/* Header: user info + badges */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center shrink-0 overflow-hidden">
             {submission.userAvatar ? (
@@ -93,30 +151,19 @@ function ReviewModal({
           Enviado {relativeTime(submission.submittedAt)}
         </p>
 
-        {submission.images && submission.images.length > 0 && (
+        {/* Descripción de la tarea */}
+        {submission.missionDescription && (
           <div className="flex flex-col gap-2">
             <p className="text-label-md text-on-surface font-semibold">
-              Imágenes enviadas
+              Descripción de la tarea
             </p>
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {submission.images.map((src, i) => (
-                <div
-                  key={src}
-                  className="w-30 h-30 rounded-md overflow-hidden shrink-0 bg-surface-container-high"
-                >
-                  <Image
-                    width={120}
-                    height={120}
-                    src={src}
-                    alt={`Captura ${i + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
+            <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-lg p-3 text-body-md text-on-surface-variant">
+              {submission.missionDescription}
             </div>
           </div>
         )}
 
+        {/* Nota del usuario */}
         {submission.userNote && (
           <div className="flex flex-col gap-2">
             <p className="text-label-md text-on-surface font-semibold">
@@ -128,31 +175,65 @@ function ReviewModal({
           </div>
         )}
 
+        {/* Lista ordenada de pasos */}
         {submission.verificationCriteria &&
           submission.verificationCriteria.length > 0 && (
-            <div className="flex flex-col gap-2">
-              <p className="text-label-md text-on-surface font-semibold">
-                Criterios de verificación
-              </p>
-              <div className="flex flex-col gap-1.5">
-                {submission.verificationCriteria.map((c) => (
-                  <div key={c.id} className="flex items-center gap-2">
-                    <span
-                      className={`material-symbols-outlined text-lg ${
-                        c.passed ? "text-[#4ade80]" : "text-error"
-                      }`}
-                    >
-                      {c.passed ? "check_circle" : "cancel"}
-                    </span>
-                    <span className="text-body-md text-on-surface-variant">
-                      {c.label}
-                    </span>
-                  </div>
-                ))}
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-3 p-3 bg-primary/6 rounded-xl">
+                <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-300"
+                    style={{
+                      width: `${totalCriteria > 0 ? Math.round((reviewedCount / totalCriteria) * 100) : 0}%`,
+                      background: "linear-gradient(90deg, #38bdf8, #8ed5ff)",
+                    }}
+                  />
+                </div>
+                <span className="text-label-sm font-semibold text-primary whitespace-nowrap">
+                  {reviewedCount} / {totalCriteria}
+                </span>
               </div>
+
+              <ol className="flex flex-col gap-2">
+                {submission.verificationCriteria.map((c, i) => (
+                  <ReviewStepCard
+                    key={c.id}
+                    criterion={c}
+                    stepNumber={i + 1}
+                    verdict={criteriaVerdicts[c.id] ?? null}
+                    onAccept={(id) => setVerdict(id, true)}
+                    onReject={(id) => setVerdict(id, false)}
+                  />
+                ))}
+              </ol>
             </div>
           )}
 
+        {/* Carga las fichas — visible solo después de revisar todo */}
+        {allReviewed && (
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="fichas-amount"
+              className="text-label-md text-on-surface font-semibold"
+            >
+              Carga las fichas
+            </label>
+            <input
+              id="fichas-amount"
+              type="number"
+              min="0"
+              placeholder="Ingresá la cantidad de fichas..."
+              value={fichasAmount}
+              onChange={(e) => {
+                setFichasAmount(e.target.value);
+                if (error) setError("");
+              }}
+              className="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-4 py-3 text-body-md text-on-surface placeholder:text-outline transition-all duration-300 focus:border-primary focus:ring-1 focus:ring-primary/30 outline-none"
+            />
+          </div>
+        )}
+
+        {/* Notas del revisor */}
         <div className="flex flex-col gap-2">
           <p className="text-label-md text-on-surface font-semibold">
             Notas del revisor
@@ -168,6 +249,7 @@ function ReviewModal({
           />
         </div>
 
+        {/* Acciones */}
         <div className="flex gap-3 pt-2">
           <button
             type="button"

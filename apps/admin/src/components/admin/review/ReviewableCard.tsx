@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
+
 import type { MissionCategory } from "@shared/types";
+
 import type { ReviewableCardProps } from "@/types/review/ReviewSubmission";
 import { ReviewStatusBadge } from "./ReviewStatusBadge";
-import Image from "next/image";
 
 const categoryLabels: Record<MissionCategory, string> = {
   daily: "Diaria",

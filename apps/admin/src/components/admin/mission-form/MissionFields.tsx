@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef } from "react";
+
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
@@ -31,10 +32,7 @@ const FIELD_LABELS: Record<string, string> = {
  * Recibe formik directamente y extrae values, setFieldValue y errors.
  * Soporta modo readOnly (etiquetas + badge "Bloqueado") para misiones activas.
  */
-function MissionFields({
-  formik,
-  readOnly = false,
-}: MissionFieldsProps) {
+function MissionFields({ formik, readOnly = false }: MissionFieldsProps) {
   const { values: mission, setFieldValue: onChange, errors } = formik;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
