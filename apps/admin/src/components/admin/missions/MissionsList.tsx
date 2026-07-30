@@ -119,7 +119,7 @@ function MissionsList() {
       button: {
         onClick: async () => {
           await activateMission(dispatch, id);
-          sileo.clear()
+          sileo.clear();
         },
         title: "Activar",
       },
