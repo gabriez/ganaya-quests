@@ -85,9 +85,9 @@ function Modal({ open, onClose, title, children, size = "md" }: ModalProps) {
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10">
-          <h2 className="text-title-md text-on-surface font-headline-lg">
+          <h3 className="text-title-md text-on-surface font-headline-lg">
             {title}
-          </h2>
+          </h3>
           <button
             type="button"
             onClick={onClose}

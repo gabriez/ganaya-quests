@@ -1,2 +1,6 @@
 @import "tailwindcss";
 @import "../../../../packages/shared/src/styles/tokens.css";
+
+[data-sileo-viewport] {
+  z-index: 10000 !important;
+}

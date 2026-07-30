@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useReducer, useState } from "react";
+import { sileo } from "sileo";
 
 import type { AdminMission } from "@shared/types";
 
@@ -112,11 +113,17 @@ function MissionsList() {
   );
 
   const handleActivate = useCallback(async (id: string) => {
-    const confirmed = window.confirm(
-      "¿Activar misión? El contenido quedará bloqueado.",
-    );
-    if (!confirmed) return;
-    await activateMission(dispatch, id);
+    sileo.action({
+      title: "¿Activar misión?",
+      description: "Si activas la misión el contenido estará bloqueado",
+      button: {
+        onClick: async () => {
+          await activateMission(dispatch, id);
+          sileo.clear()
+        },
+        title: "Activar",
+      },
+    });
   }, []);
 
   const handleCancel = useCallback(async (id: string) => {
