@@ -80,7 +80,7 @@ export interface ReviewSubmission {
   userName: string;
   userAvatar?: string;
   missionTitle: string;
-  missionCategory: MissionCategory;
+  missionCategory?: MissionCategory;
   missionDescription?: string;
   submittedAt: string;
   images?: string[];

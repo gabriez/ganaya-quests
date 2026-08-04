@@ -62,10 +62,12 @@ function ReviewableCard({ submission, onClick }: ReviewableCardProps) {
       </p>
 
       <div className="flex items-center gap-2">
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-label-sm">
-          <span className="material-symbols-outlined text-xs">sell</span>
-          {categoryLabels[submission.missionCategory]}
-        </span>
+        {submission.missionCategory ? (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-label-sm">
+            <span className="material-symbols-outlined text-xs">sell</span>
+            {categoryLabels[submission.missionCategory]}
+          </span>
+        ) : null}
         <ReviewStatusBadge status={submission.status} />
       </div>
 

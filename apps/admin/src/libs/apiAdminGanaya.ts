@@ -15,6 +15,7 @@ import type {
 
 import { API_URL, LOCAL_STORAGE_KEYS, ROUTES } from "@/constant";
 import type { AdminUser } from "@/types/auth";
+import type { StepSubmission } from "@/types/review/StepSubmission";
 
 const httpClient = new HttpClient(API_URL, axios, LOCAL_STORAGE_KEYS);
 
@@ -239,6 +240,52 @@ export default class ApiAdminGanaya {
         body: { status },
       });
       const response = data as ApiResponse<BackendMission>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  // ── Admin Review API ──
+
+  async getReviewQueue(): Promise<ApiResponse<StepSubmission[]>> {
+    const result: ApiResponse<StepSubmission[]> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.get({
+        url: "/admin/missions/review-queue",
+      });
+      const response = data as ApiResponse<StepSubmission[]>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  async reviewStep(
+    stepId: number,
+    body: { status: "APPROVED" | "REJECTED"; reviewerNotes?: string },
+  ): Promise<ApiResponse<StepSubmission>> {
+    const result: ApiResponse<StepSubmission> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.post({
+        url: `/admin/missions/steps/${stepId}/review`,
+        body,
+      });
+      const response = data as ApiResponse<StepSubmission>;
       if (response?.status) result.status = true;
       result.data = response.data;
       result.message = response.message;

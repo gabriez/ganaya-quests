@@ -140,9 +140,11 @@ function ReviewModal({
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-label-sm">
-              {categoryLabels[submission.missionCategory]}
-            </span>
+            {submission.missionCategory ? (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-label-sm">
+                {categoryLabels[submission.missionCategory]}
+              </span>
+            ) : null}
             <ReviewStatusBadge status={submission.status} />
           </div>
         </div>
