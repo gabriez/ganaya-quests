@@ -16,7 +16,6 @@ import { SkeletonCard } from "./SkeletonCard";
 const INITIAL_STATE: ReviewState = {
   submissions: [],
   filter: "pending",
-  category: "all",
   sortOrder: "newest",
   search: "",
   loading: true,
@@ -36,12 +35,12 @@ const EMPTY_MESSAGES: Record<
   approved: {
     icon: "task_alt",
     title: "No hay tareas aprobadas",
-    desc: "Las tareas que apruebes aparecerán aquí.",
+    desc: "Las revisiones aprobadas aún no están disponibles: el endpoint de cola solo expone pendientes.",
   },
   rejected: {
     icon: "gpp_bad",
     title: "No hay tareas rechazadas",
-    desc: "Las tareas que rechaces aparecerán aquí.",
+    desc: "Las revisiones rechazadas aún no están disponibles: el endpoint de cola solo expone pendientes.",
   },
 };
 
@@ -83,17 +82,12 @@ function ReviewList() {
   }, []);
 
   const filtered = useMemo(() => {
-    const { filter, category, sortOrder, search, submissions } = state;
+    const { filter, sortOrder, search, submissions } = state;
 
     let result = submissions;
 
     // Status filter
     result = result.filter((s) => s.status === filter);
-
-    // Category filter
-    if (category !== "all") {
-      result = result.filter((s) => s.missionCategory === category);
-    }
 
     // Search
     if (search.trim()) {
@@ -101,19 +95,30 @@ function ReviewList() {
       result = result.filter(
         (s) =>
           s.userName.toLowerCase().includes(q) ||
+          s.userNote?.toLowerCase().includes(q) ||
           s.missionTitle.toLowerCase().includes(q),
       );
     }
 
-    // Date sort
+    // Date sort (missing/empty dates sort as the oldest)
     result = [...result].sort((a, b) => {
-      const diff =
-        new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+      const timeA = Date.parse(a.submittedAt || "") || 0;
+      const timeB = Date.parse(b.submittedAt || "") || 0;
+      const diff = timeB - timeA;
       return sortOrder === "newest" ? diff : -diff;
     });
 
     return result;
   }, [state]);
+
+  const counts = useMemo(
+    () => ({
+      pending: state.submissions.filter((s) => s.status === "pending").length,
+      approved: state.submissions.filter((s) => s.status === "approved").length,
+      rejected: state.submissions.filter((s) => s.status === "rejected").length,
+    }),
+    [state.submissions],
+  );
 
   const empty = EMPTY_MESSAGES[state.filter];
 
@@ -125,13 +130,10 @@ function ReviewList() {
 
       <ReviewFilterBar
         activeTab={state.filter}
-        category={state.category}
+        counts={counts}
         sortOrder={state.sortOrder}
         onTabChange={(tab) =>
           dispatch({ type: "SET_FILTER", payload: { filter: tab } })
-        }
-        onCategoryChange={(cat) =>
-          dispatch({ type: "SET_CATEGORY", payload: { category: cat } })
         }
         onSortChange={(order) =>
           dispatch({ type: "SET_SORT_ORDER", payload: { sortOrder: order } })

@@ -1,7 +1,7 @@
 import type { Dispatch } from "react";
 import { sileo } from "sileo";
 
-import type { MissionCategory, ReviewSubmission } from "@shared/types";
+import type { ReviewSubmission } from "@shared/types";
 
 import { apiAdminGanaya } from "@/libs/apiAdminGanaya";
 import { stepSubmissionToReview } from "@/types/review/api-mappers";
@@ -10,7 +10,6 @@ import type { ReviewFilter } from "@/types/review/ReviewSubmission";
 export interface ReviewState {
   submissions: ReviewSubmission[];
   filter: ReviewFilter;
-  category: MissionCategory | "all";
   sortOrder: "newest" | "oldest";
   search: string;
   loading: boolean;
@@ -25,7 +24,6 @@ export interface ReviewState {
 export type ReviewAction =
   | { type: "LOAD_SUBMISSIONS"; payload: { submissions: ReviewSubmission[] } }
   | { type: "SET_FILTER"; payload: { filter: ReviewFilter } }
-  | { type: "SET_CATEGORY"; payload: { category: MissionCategory | "all" } }
   | { type: "SET_SORT_ORDER"; payload: { sortOrder: "newest" | "oldest" } }
   | { type: "SET_SEARCH"; payload: { search: string } }
   | { type: "SELECT_SUBMISSION"; payload: { submission: ReviewSubmission } }
@@ -45,8 +43,6 @@ export function reviewReducer(
       };
     case "SET_FILTER":
       return { ...state, filter: action.payload.filter };
-    case "SET_CATEGORY":
-      return { ...state, category: action.payload.category };
     case "SET_SORT_ORDER":
       return { ...state, sortOrder: action.payload.sortOrder };
     case "SET_SEARCH":
@@ -93,6 +89,7 @@ export async function loadReviewQueue(dispatch: Dispatch<ReviewAction>) {
     title: "Error al cargar la cola de revisión",
     description: getMessage(result.message),
   });
+  dispatch({ type: "LOAD_SUBMISSIONS", payload: { submissions: [] } });
 }
 
 export async function submitReview(
