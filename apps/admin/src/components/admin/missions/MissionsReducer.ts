@@ -13,6 +13,7 @@ import type { AdminMission, MissionStatus } from "@shared/types";
 
 import { apiAdminGanaya } from "@/libs/apiAdminGanaya";
 import {
+  buildCreateMissionFormData,
   mapAdminToBackend,
   mapBackendToAdmin,
 } from "@/types/missions/api-mappers";
@@ -225,7 +226,7 @@ export async function createMission(
   dispatch: Dispatch<MissionsAction>,
   data: Parameters<typeof mapAdminToBackend>[0],
 ): Promise<boolean> {
-  const payload = mapAdminToBackend(data);
+  const payload = buildCreateMissionFormData(data, data.image);
   console.log(payload);
   const result = await apiAdminGanaya.createMission(payload);
 

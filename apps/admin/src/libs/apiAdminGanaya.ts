@@ -108,23 +108,21 @@ export default class ApiAdminGanaya {
 
   // ── Admin Missions API ──
 
-  async createMission(
-    payload: BackendCreateMissionPayload,
-  ): Promise<ApiResponse<BackendMission>> {
+  async createMission(data: FormData): Promise<ApiResponse<BackendMission>> {
     const result: ApiResponse<BackendMission> = {
       data: null,
       status: false,
       message: "",
     };
     try {
-      const { data } = await this.httpClient.post({
+      const { data: response } = await this.httpClient.post({
         url: "/missions",
-        body: payload,
+        body: data,
       });
-      const response = data as ApiResponse<BackendMission>;
-      if (response?.status) result.status = true;
-      result.data = response.data;
-      result.message = response.message;
+      const responseData = response as ApiResponse<BackendMission>;
+      if (responseData?.status) result.status = true;
+      result.data = responseData.data;
+      result.message = responseData.message;
       return result;
     } catch (error) {
       return handleApiError(error, result);

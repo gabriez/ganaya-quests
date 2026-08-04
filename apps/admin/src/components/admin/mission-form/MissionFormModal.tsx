@@ -107,6 +107,7 @@ function MissionFormModal({
           status: "inactive",
           steps,
           coverImage: values.coverImage as string | undefined,
+          image: values.image as File | undefined,
         };
         console.log(createData);
         onSave(createData, true);

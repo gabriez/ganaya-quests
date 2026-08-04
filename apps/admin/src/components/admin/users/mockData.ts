@@ -1,0 +1,86 @@
+import type { AdminUser } from "@/types/adminUsers";
+
+const now = Date.now();
+
+export const MOCK_USERS: AdminUser[] = [
+  {
+    id: "1",
+    username: "admin.principal",
+    password: "Admin2024!",
+    role: "admin",
+    isActive: true,
+    createdAt: new Date(now - 90 * 86400000).toISOString(),
+  },
+  {
+    id: "2",
+    username: "revisor.carlos",
+    password: "Revisor123!",
+    role: "reviewer",
+    isActive: true,
+    createdAt: new Date(now - 60 * 86400000).toISOString(),
+  },
+  {
+    id: "3",
+    username: "revisor.maria",
+    password: "MariaRev2024",
+    role: "reviewer",
+    isActive: true,
+    createdAt: new Date(now - 45 * 86400000).toISOString(),
+  },
+  {
+    id: "4",
+    username: "admin.sistemas",
+    password: "SistAdmin99!",
+    role: "admin",
+    isActive: false,
+    createdAt: new Date(now - 30 * 86400000).toISOString(),
+  },
+  {
+    id: "5",
+    username: "revisor.juan",
+    password: "JuanRevPass1",
+    role: "reviewer",
+    isActive: true,
+    createdAt: new Date(now - 20 * 86400000).toISOString(),
+  },
+  {
+    id: "6",
+    username: "revisor.laura",
+    password: "LauraRev2024!",
+    role: "reviewer",
+    isActive: false,
+    createdAt: new Date(now - 15 * 86400000).toISOString(),
+  },
+  {
+    id: "7",
+    username: "admin.operaciones",
+    password: "Oper@2024",
+    role: "admin",
+    isActive: true,
+    createdAt: new Date(now - 10 * 86400000).toISOString(),
+  },
+  {
+    id: "8",
+    username: "revisor.pedro",
+    password: "PedroRev99!",
+    role: "reviewer",
+    isActive: true,
+    createdAt: new Date(now - 7 * 86400000).toISOString(),
+  },
+  {
+    id: "9",
+    username: "revisor.ana",
+    password: "AnaRevPass2",
+    role: "reviewer",
+    isActive: true,
+    createdAt: new Date(now - 5 * 86400000).toISOString(),
+  },
+  {
+    id: "10",
+    username: "admin.finanzas",
+    password: "Fin@nzas2024",
+    role: "admin",
+    isActive: false,
+    createdAt: new Date(now - 3 * 86400000).toISOString(),
+  },
+];
