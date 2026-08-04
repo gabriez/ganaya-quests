@@ -18,7 +18,6 @@ import type {
   BackendMissionType,
   MissionCategory,
   MissionStatus,
-  VerificationType,
 } from "@shared/types";
 
 import type { PartialAdminMission } from "@/types/missions/MissionFormModalTypes";
@@ -96,7 +95,12 @@ export function mapBackendToAdmin(
     xpReward: backendMission.experiencePoints,
     category: TYPE_TO_CATEGORY[backendMission.type],
     status: STATUS_TO_FRONTEND[backendMission.status],
-    steps: [], // Steps are managed separately via MissionFormModal
+    steps: (backendMission?.steps ?? []).map((s) => ({
+      title: s.content ?? "",
+      order: s.stepOrder,
+      verificationType: s.type,
+      id: s.id,
+    })), // Steps are managed separately via MissionFormModal
     coverImage: backendMission.imageUrl,
     participants: 0, // Not provided by backend list endpoint
     createdAt: backendMission.activatedAt ?? "",
@@ -124,17 +128,6 @@ export function mapStatusToFrontend(
 }
 
 /* ── Create (multipart) ── */
-
-/**
- * Map frontend verificationType → backend step type.
- * manual_review has no backend equivalent, so it maps to TEXT.
- */
-function mapVerificationToStepType(
-  verificationType: VerificationType,
-): "IMAGE" | "TEXT" {
-  if (verificationType === "upload_image") return "IMAGE";
-  return "TEXT";
-}
 
 /**
  * Build the multipart/form-data payload for mission creation
@@ -165,8 +158,8 @@ export function buildCreateMissionFormData(
 
   const steps = (partial.steps ?? []).map((step) => ({
     stepOrder: step.order,
-    type: mapVerificationToStepType(step.verificationType),
-    content: step.description ?? step.title,
+    type: step.verificationType,
+    content: step.title,
   }));
   formData.append("missionSteps", JSON.stringify(steps));
 

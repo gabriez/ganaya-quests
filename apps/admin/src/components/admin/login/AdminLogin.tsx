@@ -36,8 +36,8 @@ export default function AdminLogin() {
     const createParticle = () => {
       const particle = document.createElement("div");
       const size = Math.random() * 4 + 2;
-      const startX = Math.random() * 100;
-      const startY = Math.random() * 100;
+      const startX = Date.now();
+      const startY = Date.now();
 
       Object.assign(particle.style, {
         width: `${size}px`,
@@ -57,7 +57,7 @@ export default function AdminLogin() {
         [
           { transform: "translate(0, 0) scale(1)", opacity: 0 },
           {
-            transform: `translate(${Math.random() * 100 - 50}px, -100px) scale(0)`,
+            transform: `translate(${Date.now() - 50}px, -100px) scale(0)`,
             opacity: 0.5,
           },
           {

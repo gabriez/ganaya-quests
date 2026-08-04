@@ -4,13 +4,16 @@ import { useCallback } from "react";
 
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import type { PlayersFilterBarProps } from "@/types/adminPlayers";
+import type {
+  PlayerStatusFilter,
+  PlayersFilterBarProps,
+} from "@/types/adminPlayers";
 
 /**
  * PlayersFilterBar — barra de búsqueda y filtros para la tabla de jugadores.
  *
- * Incluye búsqueda por username y filtros por rango de nivel, fichas,
- * misiones completadas y misiones en curso. Sigue el patrón Midnight Harbor.
+ * Incluye búsqueda por username y filtro por estado (activo/suspendido).
+ * Sigue el patrón Midnight Harbor.
  */
 function PlayersFilterBar({ filters, onFilterChange }: PlayersFilterBarProps) {
   const handleSearch = useCallback(
@@ -34,9 +37,31 @@ function PlayersFilterBar({ filters, onFilterChange }: PlayersFilterBarProps) {
         />
       </div>
 
-      {/* Filter dropdowns */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {/* Level range */}
+      {/* Status filter */}
+      <div className="w-full lg:max-w-xs">
+        <Select
+          id="filter-status"
+          icon="verified_user"
+          placeholder="Estado"
+          value={filters.status}
+          onChange={(val) =>
+            onFilterChange({ status: val as PlayerStatusFilter })
+          }
+          options={[
+            { value: "all", label: "Todos" },
+            { value: "active", label: "Activos" },
+            { value: "suspended", label: "Suspendidos" },
+          ]}
+        />
+      </div>
+
+      {/* ── Filtros por rango (legados, comentados para uso futuro) ──
+       * El backend Player NO expone level / coins / completedMissions /
+       * inProgressMissions. Estos Selects se conservan comentados por si el
+       * backend llega a incluirlos; reactivar junto con los tipos y helpers
+       * comentados en adminPlayers.ts y PlayersReducer.ts.
+       */}
+      {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Select
           id="filter-level"
           icon="stars"
@@ -57,7 +82,6 @@ function PlayersFilterBar({ filters, onFilterChange }: PlayersFilterBarProps) {
           ]}
         />
 
-        {/* Coins range */}
         <Select
           id="filter-coins"
           icon="token"
@@ -77,7 +101,6 @@ function PlayersFilterBar({ filters, onFilterChange }: PlayersFilterBarProps) {
           ]}
         />
 
-        {/* Completed missions range */}
         <Select
           id="filter-completed"
           icon="check_circle"
@@ -98,7 +121,6 @@ function PlayersFilterBar({ filters, onFilterChange }: PlayersFilterBarProps) {
           ]}
         />
 
-        {/* In-progress missions range */}
         <Select
           id="filter-inprogress"
           icon="pending_actions"
@@ -118,7 +140,7 @@ function PlayersFilterBar({ filters, onFilterChange }: PlayersFilterBarProps) {
             { value: "6+", label: "6+" },
           ]}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -11,9 +11,11 @@ import type {
   ApiResponse,
   HttpClientInterface,
   LoginResponse,
+  PaginatedApiResponse,
 } from "@shared/types/http";
 
 import { API_URL, LOCAL_STORAGE_KEYS, ROUTES } from "@/constant";
+import type { Player } from "@/types/adminPlayers";
 import type { AdminUser } from "@/types/auth";
 import type { StepSubmission } from "@/types/review/StepSubmission";
 
@@ -132,11 +134,12 @@ export default class ApiAdminGanaya {
   async getMissions(params?: {
     take?: number;
     skip?: number;
-  }): Promise<ApiResponse<BackendMission[]>> {
-    const result: ApiResponse<BackendMission[]> = {
+  }): Promise<PaginatedApiResponse<BackendMission[]>> {
+    const result: PaginatedApiResponse<BackendMission[]> = {
       data: null,
       status: false,
       message: "",
+      meta: null,
     };
     try {
       let url = "/missions";
@@ -149,13 +152,16 @@ export default class ApiAdminGanaya {
         if (searchParams.toString()) url += `?${searchParams.toString()}`;
       }
       const { data } = await this.httpClient.get({ url });
-      const response = data as ApiResponse<BackendMission[]>;
+      const response = data as PaginatedApiResponse<BackendMission[]>;
       if (response?.status) result.status = true;
       result.data = response.data;
       result.message = response.message;
+      result.meta = response.meta ?? null;
       return result;
     } catch (error) {
-      return handleApiError(error, result);
+      return handleApiError(error, result) as unknown as PaginatedApiResponse<
+        BackendMission[]
+      >;
     }
   }
 
@@ -284,6 +290,62 @@ export default class ApiAdminGanaya {
         body,
       });
       const response = data as ApiResponse<StepSubmission>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  // ── Admin Players API ──
+
+  async getPlayers(params?: {
+    take?: number;
+    skip?: number;
+  }): Promise<PaginatedApiResponse<Player[]>> {
+    const result: PaginatedApiResponse<Player[]> = {
+      data: null,
+      status: false,
+      message: "",
+      meta: null,
+    };
+    try {
+      let url = "/players";
+      if (params?.take !== undefined || params?.skip !== undefined) {
+        const searchParams = new URLSearchParams();
+        if (params.take !== undefined)
+          searchParams.append("take", params.take.toString());
+        if (params.skip !== undefined)
+          searchParams.append("skip", params.skip.toString());
+        if (searchParams.toString()) url += `?${searchParams.toString()}`;
+      }
+      const { data } = await this.httpClient.get({ url });
+      const response = data as PaginatedApiResponse<Player[]>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      result.meta = response.meta ?? null;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result) as unknown as PaginatedApiResponse<
+        Player[]
+      >;
+    }
+  }
+
+  async getPlayerById(id: number): Promise<ApiResponse<Player>> {
+    const result: ApiResponse<Player> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.get({
+        url: `/players/${id}`,
+      });
+      const response = data as ApiResponse<Player>;
       if (response?.status) result.status = true;
       result.data = response.data;
       result.message = response.message;

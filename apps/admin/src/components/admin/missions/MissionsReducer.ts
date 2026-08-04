@@ -20,7 +20,7 @@ import {
 
 /* ── Constants ── */
 
-const PAGE_SIZE = 8;
+export const PAGE_SIZE = 8;
 
 /* ── State ── */
 
@@ -47,7 +47,11 @@ export const initialState: MissionsState = {
 export type MissionsAction =
   | {
       type: "LOAD_MISSIONS";
-      payload: { missions: AdminMission[] };
+      payload: { missions: AdminMission[]; totalPages: number };
+    }
+  | {
+      type: "SET_LOADING";
+      payload: { loading: boolean };
     }
   | {
       type: "SET_FILTER";
@@ -76,7 +80,7 @@ export type MissionsAction =
 
 /* ── Filter + Search logic ── */
 
-function applyFilters(
+export function applyFilters(
   missions: AdminMission[],
   filter: "all" | MissionStatus,
   search: string,
@@ -101,10 +105,6 @@ function applyFilters(
   return filtered;
 }
 
-function getTotalPages(length: number) {
-  return Math.max(1, Math.ceil(length / PAGE_SIZE));
-}
-
 /* ── Reducer ── */
 
 export function missionsReducer(
@@ -113,89 +113,58 @@ export function missionsReducer(
 ): MissionsState {
   switch (action.type) {
     case "LOAD_MISSIONS": {
-      const missions = action.payload.missions;
-      const filtered = applyFilters(missions, state.filter, state.search);
       return {
         ...state,
-        missions,
-        totalPages: getTotalPages(filtered.length),
+        missions: action.payload.missions,
+        totalPages: action.payload.totalPages,
         loading: false,
-        page: 1,
       };
     }
 
     case "SET_FILTER": {
       const { filter } = action.payload;
-      const filtered = applyFilters(state.missions, filter, state.search);
-      return {
-        ...state,
-        filter,
-        totalPages: getTotalPages(filtered.length),
-        page: 1,
-      };
+      return { ...state, filter, page: 1 };
     }
 
     case "SET_SEARCH": {
       const { search } = action.payload;
-      const filtered = applyFilters(state.missions, state.filter, search);
-      return {
-        ...state,
-        search,
-        totalPages: getTotalPages(filtered.length),
-        page: 1,
-      };
+      return { ...state, search, page: 1 };
     }
 
     case "SET_PAGE": {
       return { ...state, page: action.payload.page };
     }
 
+    case "SET_LOADING": {
+      return { ...state, loading: action.payload.loading };
+    }
+
     case "CREATE_MISSION": {
-      const missions = [action.payload.mission, ...state.missions];
-      const filtered = applyFilters(missions, state.filter, state.search);
       return {
         ...state,
-        missions,
-        totalPages: getTotalPages(filtered.length),
+        missions: [action.payload.mission, ...state.missions],
       };
     }
 
     case "UPDATE_MISSION": {
-      const missions = state.missions.map((m) =>
-        m.id === action.payload.mission.id ? action.payload.mission : m,
-      );
-      const filtered = applyFilters(missions, state.filter, state.search);
       return {
         ...state,
-        missions,
-        totalPages: getTotalPages(filtered.length),
+        missions: state.missions.map((m) =>
+          m.id === action.payload.mission.id ? action.payload.mission : m,
+        ),
       };
     }
 
     case "DELETE_MISSION": {
-      const missions = state.missions.filter((m) => m.id !== action.payload.id);
-      const filtered = applyFilters(missions, state.filter, state.search);
-      const totalPages = getTotalPages(filtered.length);
-      const page = Math.min(state.page, totalPages);
-      return { ...state, missions, totalPages, page };
+      return {
+        ...state,
+        missions: state.missions.filter((m) => m.id !== action.payload.id),
+      };
     }
 
     default:
       return state;
   }
-}
-
-/* ── Selector: get current page items ── */
-
-export function getCurrentPageItems(
-  missions: AdminMission[],
-  filter: "all" | MissionStatus,
-  search: string,
-  page: number,
-): AdminMission[] {
-  const filtered = applyFilters(missions, filter, search);
-  const start = (page - 1) * PAGE_SIZE;
-  return filtered.slice(start, start + PAGE_SIZE);
 }
 
 /* ── Helpers ── */
@@ -207,15 +176,30 @@ function getMessage(msg: string | string[] | undefined): string {
 
 /* ── Action dispatchers (thunk-like wrappers) ── */
 
-export async function loadMissions(dispatch: Dispatch<MissionsAction>) {
-  const result = await apiAdminGanaya.getMissions();
+export async function loadMissions(
+  dispatch: Dispatch<MissionsAction>,
+  page: number,
+) {
+  dispatch({ type: "SET_LOADING", payload: { loading: true } });
+
+  const result = await apiAdminGanaya.getMissions({
+    take: PAGE_SIZE,
+    skip: (page - 1) * PAGE_SIZE,
+  });
 
   if (result.status && result.data) {
-    const missions = result.data.map(mapBackendToAdmin);
-    dispatch({ type: "LOAD_MISSIONS", payload: { missions } });
+    dispatch({
+      type: "LOAD_MISSIONS",
+      payload: {
+        missions: result.data.map(mapBackendToAdmin),
+        totalPages: result.meta?.totalPages ?? 1,
+      },
+    });
     return;
   }
 
+  // Evita dejar el spinner en loop y permite mostrar el empty state.
+  dispatch({ type: "LOAD_MISSIONS", payload: { missions: [], totalPages: 1 } });
   sileo.error({
     title: "Error al cargar misiones",
     description: getMessage(result.message),
@@ -227,7 +211,6 @@ export async function createMission(
   data: Parameters<typeof mapAdminToBackend>[0],
 ): Promise<boolean> {
   const payload = buildCreateMissionFormData(data, data.image);
-  console.log(payload);
   const result = await apiAdminGanaya.createMission(payload);
 
   if (result.status && result.data) {

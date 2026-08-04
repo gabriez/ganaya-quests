@@ -15,7 +15,6 @@ export type {
   BackendCreateMissionPayload,
   BackendMission,
   BackendMissionStatus,
-  BackendMissionStep,
   BackendMissionType,
   MissionCategory,
   MissionStatus,

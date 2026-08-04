@@ -6,7 +6,7 @@ import { PlayerRow } from "./PlayerRow";
 /**
  * PlayersTable — tabla de jugadores de la plataforma.
  *
- * Renderiza el encabezado con las columnas de stats y las filas
+ * Renderiza el encabezado con usuario, teléfono y estado, y las filas
  * mediante PlayerRow. Sigue el mismo patrón visual que UsersTable
  * adaptado a los campos de jugador según Midnight Harbor.
  */
@@ -37,19 +37,10 @@ function PlayersTable({ players }: PlayersTableProps) {
               Jugador
             </th>
             <th className="py-3 px-4 text-left text-label-sm font-semibold text-on-surface-variant">
-              Nivel
+              Teléfono
             </th>
             <th className="py-3 px-4 text-left text-label-sm font-semibold text-on-surface-variant">
-              Experiencia
-            </th>
-            <th className="py-3 px-4 text-left text-label-sm font-semibold text-on-surface-variant">
-              Fichas
-            </th>
-            <th className="py-3 px-4 text-left text-label-sm font-semibold text-on-surface-variant">
-              Completadas
-            </th>
-            <th className="py-3 px-4 text-left text-label-sm font-semibold text-on-surface-variant">
-              En curso
+              Estado
             </th>
           </tr>
         </thead>

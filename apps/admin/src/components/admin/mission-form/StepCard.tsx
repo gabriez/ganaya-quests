@@ -7,9 +7,8 @@ import { Select } from "@/components/ui/Select";
 import type { StepCardProps } from "@/types/missions/StepBuilderTypes";
 
 const VERIFICATION_OPTIONS: { value: string; label: string }[] = [
-  { value: "upload_image", label: "Subir imagen" },
-  { value: "submit_text", label: "Enviar texto" },
-  { value: "manual_review", label: "Revisión manual" },
+  { value: "IMAGE", label: "Subir imagen" },
+  { value: "TEXT", label: "Enviar texto" },
 ];
 
 /**

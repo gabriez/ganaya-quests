@@ -9,9 +9,9 @@ const nextConfig: NextConfig = {
         hostname: "picsum.photos",
       },
       {
-        protocol: 'https',
-        hostname: 'pub-f43e2a6bc3b94b058dd10fe071de22ef.r2.dev'
-      }
+        protocol: "https",
+        hostname: "pub-f43e2a6bc3b94b058dd10fe071de22ef.r2.dev",
+      },
     ],
   },
 };

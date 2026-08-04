@@ -6,7 +6,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import type { PlayerFilters } from "@/types/adminPlayers";
 import { PlayersFilterBar } from "./PlayersFilterBar";
 import {
-  getCurrentPageItems,
+  applyFilters,
   initialState,
   loadPlayers,
   playersReducer,
@@ -23,17 +23,13 @@ import { PlayersTable } from "./PlayersTable";
 function PlayersList() {
   const [state, dispatch] = useReducer(playersReducer, initialState);
 
-  /* ── Load players on mount ── */
+  /* ── Load players on mount / page change ── */
   useEffect(() => {
-    loadPlayers(dispatch);
-  }, []);
+    loadPlayers(dispatch, state.page);
+  }, [state.page]);
 
-  /* ── Filtered + paginated items ── */
-  const pagePlayers = getCurrentPageItems(
-    state.players,
-    state.filters,
-    state.page,
-  );
+  /* ── Filtered items ── */
+  const pagePlayers = applyFilters(state.players, state.filters);
 
   /* ── Handlers ── */
 
@@ -69,7 +65,7 @@ function PlayersList() {
           Jugadores
         </h1>
         <p className="text-body-md text-on-surface-variant mt-1">
-          Explorá los jugadores registrados, su progreso y estadísticas
+          Explorá los jugadores registrados y su estado
         </p>
       </div>
 

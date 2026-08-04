@@ -20,9 +20,9 @@ import { MissionFields } from "./MissionFields";
 import { StepBuilder } from "./StepBuilder";
 
 const DEFAULT_STEP: MissionStep = {
-  id: "new_step_1",
+  id: 1,
   title: "",
-  verificationType: "upload_image" as VerificationType,
+  verificationType: "IMAGE" as VerificationType,
   order: 1,
 };
 
@@ -63,7 +63,7 @@ function createEmptyInitialValues(): PartialAdminMission {
     xpReward: 0,
     category: "daily",
     status: "inactive",
-    steps: [{ ...DEFAULT_STEP, id: crypto.randomUUID() }],
+    steps: [{ ...DEFAULT_STEP, id: Math.random() * 1 }],
   };
 }
 
@@ -95,7 +95,7 @@ function MissionFormModal({
         ...s,
         order: i + 1,
       }));
-      console.log("whatsup");
+
       if (isCreating) {
         const createData: PartialAdminMission = {
           title: (values.title as string) || "",
@@ -109,7 +109,6 @@ function MissionFormModal({
           coverImage: values.coverImage as string | undefined,
           image: values.image as File | undefined,
         };
-        console.log(createData);
         onSave(createData, true);
       } else {
         const updateData: PartialAdminMission = {

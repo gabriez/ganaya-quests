@@ -13,10 +13,10 @@ import type { FilterValue } from "@/types/missions/FilterTabs";
 import { FilterTabs } from "./FilterTabs";
 import {
   activateMission,
+  applyFilters,
   cancelMission,
   createMission,
   deleteMission,
-  getCurrentPageItems,
   initialState,
   loadMissions,
   missionsReducer,
@@ -45,18 +45,13 @@ function MissionsList() {
   );
   const [showFormModal, setShowFormModal] = useState(false);
 
-  /* ── Load missions on mount ── */
+  /* ── Load missions on mount / page change ── */
   useEffect(() => {
-    loadMissions(dispatch);
-  }, []);
+    loadMissions(dispatch, state.page);
+  }, [state.page]);
 
-  /* ── Filtered + paginated items ── */
-  const pageMissions = getCurrentPageItems(
-    state.missions,
-    state.filter,
-    state.search,
-    state.page,
-  );
+  /* ── Filtered items ── */
+  const pageMissions = applyFilters(state.missions, state.filter, state.search);
 
   /* ── Handlers ── */
 

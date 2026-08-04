@@ -70,9 +70,9 @@ function StepBuilder({ formik, readOnly = false }: StepBuilderProps) {
 
   const handleAdd = () => {
     const newStep: MissionStep = {
-      id: crypto.randomUUID(),
+      id: Date.now(),
       title: "",
-      verificationType: "upload_image" as VerificationType,
+      verificationType: "IMAGE" as VerificationType,
       order: steps.length + 1,
     };
     onChange([...steps, newStep]);
