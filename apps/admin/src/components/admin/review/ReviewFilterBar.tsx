@@ -1,23 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
-
-import type { MissionCategory } from "@shared/types";
-
 import type { ReviewFilter } from "@/types/review/ReviewSubmission";
 
 const TABS: { value: ReviewFilter; label: string }[] = [
   { value: "pending", label: "Pendientes" },
   { value: "approved", label: "Aprobadas" },
   { value: "rejected", label: "Rechazadas" },
-];
-
-const CATEGORIES: { value: MissionCategory | "all"; label: string }[] = [
-  { value: "all", label: "Todas" },
-  { value: "daily", label: "Diaria" },
-  { value: "weekly", label: "Semanal" },
-  { value: "fixed", label: "Fija" },
-  { value: "special_event", label: "Evento" },
 ];
 
 const SORT_OPTIONS: { value: "newest" | "oldest"; label: string }[] = [
@@ -27,26 +15,19 @@ const SORT_OPTIONS: { value: "newest" | "oldest"; label: string }[] = [
 
 interface ReviewFilterBarProps {
   activeTab: ReviewFilter;
-  category: MissionCategory | "all";
+  counts: Record<ReviewFilter, number>;
   sortOrder: "newest" | "oldest";
   onTabChange: (tab: ReviewFilter) => void;
-  onCategoryChange: (cat: MissionCategory | "all") => void;
   onSortChange: (order: "newest" | "oldest") => void;
 }
 
 function ReviewFilterBar({
   activeTab,
-  category,
+  counts,
   sortOrder,
   onTabChange,
-  onCategoryChange,
   onSortChange,
 }: ReviewFilterBarProps) {
-  const _totalCounts = useMemo(() => {
-    return { pending: 0, approved: 0, rejected: 0 };
-    // Counts come from parent; mock for now
-  }, []);
-
   return (
     <div className="flex flex-col gap-4">
       {/* Status tabs */}
@@ -66,7 +47,7 @@ function ReviewFilterBar({
               onClick={() => onTabChange(tab.value)}
               className={`
                 px-4 py-2 rounded-full text-label-sm font-semibold
-                transition-all duration-200 cursor-pointer
+                transition-all duration-200 cursor-pointer inline-flex items-center gap-1.5
                 ${
                   isActive
                     ? "bg-primary text-on-primary"
@@ -75,35 +56,22 @@ function ReviewFilterBar({
               `}
             >
               {tab.label}
+              <span
+                className={`inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full text-[11px] font-bold ${
+                  isActive
+                    ? "bg-on-primary/20 text-on-primary"
+                    : "bg-white/10 text-on-surface-variant"
+                }`}
+              >
+                {counts[tab.value]}
+              </span>
             </button>
           );
         })}
       </div>
 
-      {/* Category + date filters */}
+      {/* Date filter */}
       <div className="flex flex-wrap items-center gap-3">
-        {/* Category select */}
-        <div className="flex items-center gap-2">
-          <span className="text-label-sm text-on-surface-variant shrink-0">
-            Categoría:
-          </span>
-          <select
-            value={category}
-            onChange={(e) =>
-              onCategoryChange(e.target.value as MissionCategory | "all")
-            }
-            className="bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer"
-            aria-label="Filtrar por categoría"
-          >
-            {CATEGORIES.map((cat) => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Sort by date */}
         <div className="flex items-center gap-2">
           <span className="text-label-sm text-on-surface-variant shrink-0">
             Orden:
@@ -131,4 +99,3 @@ function ReviewFilterBar({
 ReviewFilterBar.displayName = "ReviewFilterBar";
 
 export { ReviewFilterBar };
-export type { ReviewFilterBarProps };
