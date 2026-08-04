@@ -29,4 +29,4 @@ If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is 
 
 ## Check code
 To check code always use: 
-- pnpm format && pnpm build
+- pnpm format && pnpm ci

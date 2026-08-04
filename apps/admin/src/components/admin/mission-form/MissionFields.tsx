@@ -214,8 +214,8 @@ function MissionFields({ formik, readOnly = false }: MissionFieldsProps) {
           <div className="relative rounded-lg overflow-hidden border border-outline-variant/30">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <Image
-              width={100}
-              height={100}
+              width={500}
+              height={500}
               src={mission.coverImage}
               alt="Cover preview"
               className="w-full h-auto"
