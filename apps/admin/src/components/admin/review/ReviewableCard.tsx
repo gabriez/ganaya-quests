@@ -49,11 +49,13 @@ function ReviewableCard({ submission, onClick }: ReviewableCardProps) {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-label-md text-on-surface truncate font-semibold">
-            {submission.userName}
+            {submission.userName || "Jugador"}
           </p>
-          <p className="text-label-sm text-on-surface-variant">
-            {relativeTime(submission.submittedAt)}
-          </p>
+          {submission.submittedAt ? (
+            <p className="text-label-sm text-on-surface-variant">
+              {relativeTime(submission.submittedAt)}
+            </p>
+          ) : null}
         </div>
       </div>
 

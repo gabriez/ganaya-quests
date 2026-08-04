@@ -1,13 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useReducer } from "react";
-import { sileo } from "sileo";
 
-import { getAllMockSubmissions } from "./mockData";
 import { ReviewableCard } from "./ReviewableCard";
 import { ReviewFilterBar } from "./ReviewFilterBar";
 import { ReviewModal } from "./ReviewModal";
-import { type ReviewState, reviewReducer } from "./reviewReducer";
+import {
+  loadReviewQueue,
+  type ReviewState,
+  reviewReducer,
+  submitReview,
+} from "./reviewReducer";
 import { SkeletonCard } from "./SkeletonCard";
 
 const INITIAL_STATE: ReviewState = {
@@ -46,13 +49,7 @@ function ReviewList() {
   const [state, dispatch] = useReducer(reviewReducer, INITIAL_STATE);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch({
-        type: "LOAD_SUBMISSIONS",
-        payload: { submissions: getAllMockSubmissions() },
-      });
-    }, 500);
-    return () => clearTimeout(timer);
+    loadReviewQueue(dispatch);
   }, []);
 
   const handleSelect = useCallback(
@@ -61,7 +58,7 @@ function ReviewList() {
       if (sub)
         dispatch({
           type: "SELECT_SUBMISSION",
-          payload: { submission: sub as never },
+          payload: { submission: sub },
         });
     },
     [state.submissions],
@@ -71,16 +68,18 @@ function ReviewList() {
     dispatch({ type: "CLOSE_MODAL" });
   }, []);
 
-  const handleApprove = useCallback(async (id: string, _notes?: string) => {
-    await new Promise((r) => setTimeout(r, 400));
-    dispatch({ type: "UPDATE_STATUS", payload: { id, status: "approved" } });
-    sileo.success({ title: "Tarea aprobada correctamente", duration: 3000 });
+  const handleApprove = useCallback(async (id: string, notes?: string) => {
+    await submitReview(dispatch, id, {
+      status: "APPROVED",
+      reviewerNotes: notes,
+    });
   }, []);
 
-  const handleReject = useCallback(async (id: string, _notes: string) => {
-    await new Promise((r) => setTimeout(r, 400));
-    dispatch({ type: "UPDATE_STATUS", payload: { id, status: "rejected" } });
-    sileo.success({ title: "Tarea rechazada", duration: 3000 });
+  const handleReject = useCallback(async (id: string, notes: string) => {
+    await submitReview(dispatch, id, {
+      status: "REJECTED",
+      reviewerNotes: notes,
+    });
   }, []);
 
   const filtered = useMemo(() => {
