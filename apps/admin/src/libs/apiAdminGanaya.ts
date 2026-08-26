@@ -16,7 +16,15 @@ import type {
 
 import { API_URL, LOCAL_STORAGE_KEYS, ROUTES } from "@/constant";
 import type { Player } from "@/types/adminPlayers";
+import type {
+  AdminUser as AdminPanelUser,
+  AdminUserFormData,
+} from "@/types/adminUsers";
 import type { AdminUser } from "@/types/auth";
+import type {
+  ReviewQueueByPlayer,
+  ReviewQueueParams,
+} from "@/types/review/ReviewQueueByPlayer";
 import type { StepSubmission } from "@/types/review/StepSubmission";
 
 const httpClient = new HttpClient(API_URL, axios, LOCAL_STORAGE_KEYS);
@@ -255,23 +263,40 @@ export default class ApiAdminGanaya {
 
   // ── Admin Review API ──
 
-  async getReviewQueue(): Promise<ApiResponse<StepSubmission[]>> {
-    const result: ApiResponse<StepSubmission[]> = {
+  async getReviewQueue(
+    params?: ReviewQueueParams,
+  ): Promise<PaginatedApiResponse<ReviewQueueByPlayer[]>> {
+    const result: PaginatedApiResponse<ReviewQueueByPlayer[]> = {
       data: null,
       status: false,
       message: "",
+      meta: null,
     };
     try {
-      const { data } = await this.httpClient.get({
-        url: "/admin/missions/review-queue",
-      });
-      const response = data as ApiResponse<StepSubmission[]>;
+      let url = "/admin/missions/review-queue";
+
+      if (params) {
+        const searchParams = new URLSearchParams();
+        if (params.status) searchParams.append("status", params.status);
+        if (params.type) searchParams.append("type", params.type);
+        if (params.take !== undefined)
+          searchParams.append("take", params.take.toString());
+        if (params.skip !== undefined)
+          searchParams.append("skip", params.skip.toString());
+        if (searchParams.toString()) url += `?${searchParams.toString()}`;
+      }
+
+      const { data } = await this.httpClient.get({ url });
+      const response = data as PaginatedApiResponse<ReviewQueueByPlayer[]>;
       if (response?.status) result.status = true;
       result.data = response.data;
       result.message = response.message;
+      result.meta = response.meta ?? null;
       return result;
     } catch (error) {
-      return handleApiError(error, result);
+      return handleApiError(error, result) as unknown as PaginatedApiResponse<
+        ReviewQueueByPlayer[]
+      >;
     }
   }
 
@@ -346,6 +371,109 @@ export default class ApiAdminGanaya {
         url: `/players/${id}`,
       });
       const response = data as ApiResponse<Player>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  // ── Admin Users API ──
+
+  async getUsers(params?: {
+    take?: number;
+    skip?: number;
+  }): Promise<PaginatedApiResponse<AdminPanelUser[]>> {
+    const result: PaginatedApiResponse<AdminPanelUser[]> = {
+      data: null,
+      status: false,
+      message: "",
+      meta: null,
+    };
+    try {
+      let url = "/users";
+      if (params?.take !== undefined || params?.skip !== undefined) {
+        const searchParams = new URLSearchParams();
+        if (params.take !== undefined)
+          searchParams.append("take", params.take.toString());
+        if (params.skip !== undefined)
+          searchParams.append("skip", params.skip.toString());
+        if (searchParams.toString()) url += `?${searchParams.toString()}`;
+      }
+      const { data } = await this.httpClient.get({ url });
+      const response = data as PaginatedApiResponse<AdminPanelUser[]>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      result.meta = response.meta ?? null;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result) as unknown as PaginatedApiResponse<
+        AdminPanelUser[]
+      >;
+    }
+  }
+
+  async getUserById(id: number): Promise<ApiResponse<AdminPanelUser>> {
+    const result: ApiResponse<AdminPanelUser> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.get({
+        url: `/users/${id}`,
+      });
+      const response = data as ApiResponse<AdminPanelUser>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  async createUser(
+    body: AdminUserFormData,
+  ): Promise<ApiResponse<AdminPanelUser>> {
+    const result: ApiResponse<AdminPanelUser> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.post({
+        url: "/users",
+        body,
+      });
+      const response = data as ApiResponse<AdminPanelUser>;
+      if (response?.status) result.status = true;
+      result.data = response.data;
+      result.message = response.message;
+      return result;
+    } catch (error) {
+      return handleApiError(error, result);
+    }
+  }
+
+  async updateUser(
+    id: number,
+    body: Partial<AdminUserFormData>,
+  ): Promise<ApiResponse<AdminPanelUser>> {
+    const result: ApiResponse<AdminPanelUser> = {
+      data: null,
+      status: false,
+      message: "",
+    };
+    try {
+      const { data } = await this.httpClient.patch({
+        url: `/users/${id}`,
+        body,
+      });
+      const response = data as ApiResponse<AdminPanelUser>;
       if (response?.status) result.status = true;
       result.data = response.data;
       result.message = response.message;

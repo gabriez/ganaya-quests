@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReviewMissionType } from "@/types/review/ReviewQueueByPlayer";
 import type { ReviewFilter } from "@/types/review/ReviewSubmission";
 
 const TABS: { value: ReviewFilter; label: string }[] = [
@@ -8,25 +9,25 @@ const TABS: { value: ReviewFilter; label: string }[] = [
   { value: "rejected", label: "Rechazadas" },
 ];
 
-const SORT_OPTIONS: { value: "newest" | "oldest"; label: string }[] = [
-  { value: "newest", label: "Más recientes" },
-  { value: "oldest", label: "Más antiguas" },
+const TYPE_OPTIONS: { value: ReviewMissionType | "all"; label: string }[] = [
+  { value: "all", label: "Todas las categorías" },
+  { value: "DAILY", label: "Diaria" },
+  { value: "WEEKLY", label: "Semanal" },
+  { value: "FIXED", label: "Fija" },
 ];
 
 interface ReviewFilterBarProps {
   activeTab: ReviewFilter;
-  counts: Record<ReviewFilter, number>;
-  sortOrder: "newest" | "oldest";
+  activeType: ReviewMissionType | "all";
   onTabChange: (tab: ReviewFilter) => void;
-  onSortChange: (order: "newest" | "oldest") => void;
+  onTypeChange: (type: ReviewMissionType | "all") => void;
 }
 
 function ReviewFilterBar({
   activeTab,
-  counts,
-  sortOrder,
+  activeType,
   onTabChange,
-  onSortChange,
+  onTypeChange,
 }: ReviewFilterBarProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -56,35 +57,26 @@ function ReviewFilterBar({
               `}
             >
               {tab.label}
-              <span
-                className={`inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full text-[11px] font-bold ${
-                  isActive
-                    ? "bg-on-primary/20 text-on-primary"
-                    : "bg-white/10 text-on-surface-variant"
-                }`}
-              >
-                {counts[tab.value]}
-              </span>
             </button>
           );
         })}
       </div>
 
-      {/* Date filter */}
+      {/* Category filter */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
           <span className="text-label-sm text-on-surface-variant shrink-0">
-            Orden:
+            Categoría:
           </span>
           <select
-            value={sortOrder}
+            value={activeType}
             onChange={(e) =>
-              onSortChange(e.target.value as "newest" | "oldest")
+              onTypeChange(e.target.value as ReviewMissionType | "all")
             }
             className="bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer"
-            aria-label="Ordenar por fecha"
+            aria-label="Filtrar por categoría de misión"
           >
-            {SORT_OPTIONS.map((opt) => (
+            {TYPE_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
               </option>

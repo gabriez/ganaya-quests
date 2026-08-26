@@ -15,7 +15,7 @@ import type { UserFormModalProps } from "@/types/adminUsers";
 const CreateSchema = Yup.object().shape({
   username: Yup.string()
     .min(3, "Mínimo 3 caracteres")
-    .max(30, "Máximo 30 caracteres")
+    .max(20, "Máximo 20 caracteres")
     .matches(
       /^[a-zA-Z0-9._-]+$/,
       "Solo letras, números, puntos, guiones y guiones bajos",
@@ -23,9 +23,10 @@ const CreateSchema = Yup.object().shape({
     .required("El usuario es obligatorio"),
   password: Yup.string()
     .min(6, "Mínimo 6 caracteres")
+    .max(50, "Máximo 50 caracteres")
     .required("La contraseña es obligatoria"),
   role: Yup.string()
-    .oneOf(["admin", "reviewer"], "Seleccioná un rol válido")
+    .oneOf(["SUPER_ADMIN", "REVIEWER"], "Seleccioná un rol válido")
     .required("El rol es obligatorio"),
   isActive: Yup.boolean(),
 });
@@ -33,15 +34,17 @@ const CreateSchema = Yup.object().shape({
 const EditSchema = Yup.object().shape({
   username: Yup.string()
     .min(3, "Mínimo 3 caracteres")
-    .max(30, "Máximo 30 caracteres")
+    .max(20, "Máximo 20 caracteres")
     .matches(
       /^[a-zA-Z0-9._-]+$/,
       "Solo letras, números, puntos, guiones y guiones bajos",
     )
     .required("El usuario es obligatorio"),
-  password: Yup.string().min(6, "Mínimo 6 caracteres"),
+  password: Yup.string()
+    .min(6, "Mínimo 6 caracteres")
+    .max(50, "Máximo 50 caracteres"),
   role: Yup.string()
-    .oneOf(["admin", "reviewer"], "Seleccioná un rol válido")
+    .oneOf(["SUPER_ADMIN", "REVIEWER"], "Seleccioná un rol válido")
     .required("El rol es obligatorio"),
   isActive: Yup.boolean(),
 });
@@ -49,9 +52,9 @@ const EditSchema = Yup.object().shape({
 /**
  * UserFormModal — modal de creación/edición de usuarios administrativos.
  *
- * Usa Formik + Yup para validación. En modo edición, la contraseña es
- * opcional (solo se actualiza si se modifica). Sigue el patrón de
- * glassmorphism de Midnight Harbor para el panel modal.
+ * Usa Formik + Yup para validación. La contraseña se puede establecer
+ * pero nunca se ve — la API no la devuelve, así que en edición siempre
+ * arranca vacía y es opcional.
  */
 function UserFormModal({ open, onClose, user, onSave }: UserFormModalProps) {
   const isCreate = user === null;
@@ -78,14 +81,14 @@ function UserFormModal({ open, onClose, user, onSave }: UserFormModalProps) {
   }, [onClose]);
 
   const roleOptions = [
-    { value: "reviewer", label: "Reviewer" },
-    { value: "admin", label: "Admin" },
+    { value: "REVIEWER", label: "Reviewer" },
+    { value: "SUPER_ADMIN", label: "Super Admin" },
   ];
 
   const initialValues = {
     username: user?.username ?? "",
     password: "",
-    role: user?.role ?? ("reviewer" as const),
+    role: user?.role ?? ("REVIEWER" as const),
     isActive: user?.isActive ?? true,
   };
 

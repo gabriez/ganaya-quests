@@ -1,5 +1,5 @@
 /** Rol de usuario dentro del panel administrativo */
-export type UserRole = "admin" | "reviewer";
+export type UserRole = "SUPER_ADMIN" | "REVIEWER";
 
 /** Estado de actividad del usuario administrativo */
 export type UserActiveStatus = "all" | "active" | "inactive";
@@ -7,13 +7,12 @@ export type UserActiveStatus = "all" | "active" | "inactive";
 /**
  * AdminUser — usuario del panel de administración.
  *
- * Representa tanto admins como reviewers con capacidad de
- * gestionar misiones, revisiones y usuarios del sistema.
+ * La API nunca devuelve el password. Los campos coinciden con
+ * la respuesta de GET /users y GET /users/:id.
  */
 export interface AdminUser {
-  id: string;
+  id: number;
   username: string;
-  password: string;
   role: UserRole;
   isActive: boolean;
   createdAt: string;
@@ -58,24 +57,30 @@ export interface UsersState {
 /** Props para la fila de la tabla (UserRow) */
 export interface UserRowProps {
   user: AdminUser;
-  onEdit: (id: string) => void;
-  onToggleActive: (id: string) => void;
+  onEdit: (id: number) => void;
+  onToggleActive: (id: number) => void;
 }
 
 /** Props para la tabla de usuarios (UsersTable) */
 export interface UsersTableProps {
   users: AdminUser[];
-  onEdit: (id: string) => void;
-  onToggleActive: (id: string) => void;
+  onEdit: (id: number) => void;
+  onToggleActive: (id: number) => void;
 }
 
 /** Acciones del reducer */
 export type UsersAction =
-  | { type: "SET_USERS"; payload: { users: AdminUser[] } }
-  | { type: "SET_ROLE_FILTER"; payload: { roleFilter: UserRole | "all" } }
-  | { type: "SET_ACTIVE_FILTER"; payload: { activeFilter: UserActiveStatus } }
+  | { type: "SET_USERS"; payload: { users: AdminUser[]; totalPages: number } }
+  | {
+      type: "SET_ROLE_FILTER";
+      payload: { roleFilter: UserRole | "all" };
+    }
+  | {
+      type: "SET_ACTIVE_FILTER";
+      payload: { activeFilter: UserActiveStatus };
+    }
   | { type: "SET_SEARCH"; payload: { search: string } }
   | { type: "SET_PAGE"; payload: { page: number } }
   | { type: "CREATE_USER"; payload: { user: AdminUser } }
   | { type: "UPDATE_USER"; payload: { user: AdminUser } }
-  | { type: "TOGGLE_USER_ACTIVE"; payload: { id: string } };
+  | { type: "TOGGLE_USER_ACTIVE"; payload: { id: number } };

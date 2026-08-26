@@ -6,7 +6,7 @@ import { sileo } from "sileo";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Pagination } from "@/components/ui/Pagination";
-import type { AdminUserFormData } from "@/types/adminUsers";
+import type { AdminUserFormData, UserRole } from "@/types/adminUsers";
 import { UserFilterTabs } from "./UserFilterTabs";
 import { UserFormModal } from "./UserFormModal";
 import {
@@ -23,14 +23,17 @@ import { UsersTable } from "./UsersTable";
  * UsersList — orquestador principal de la página de usuarios administrativos.
  *
  * Maneja estado paginado con useReducer, filtros paralelos (rol + estado activo),
- * búsqueda por username, y el modal de creación/edición. Sigue el mismo patrón
- * que MissionsList.
+ * búsqueda por username, y el modal de creación/edición. Las operaciones
+ * CRUD se delegan al API real mediante apiAdminGanaya.
+ *
+ * La contraseña solo es accesible para SUPER_ADMIN (puede establecerla pero
+ * nunca verla — la API no la devuelve).
  */
 function UsersList() {
   const [state, dispatch] = useReducer(usersReducer, initialState);
 
   /* ── User Form Modal state ── */
-  const [editingUser, setEditingUser] = useState<string | null>(null);
+  const [editingUser, setEditingUser] = useState<number | null>(null);
   const [showFormModal, setShowFormModal] = useState(false);
 
   /* ── Load users on mount ── */
@@ -56,12 +59,9 @@ function UsersList() {
     [],
   );
 
-  const handleRoleChange = useCallback(
-    (roleFilter: "all" | "admin" | "reviewer") => {
-      dispatch({ type: "SET_ROLE_FILTER", payload: { roleFilter } });
-    },
-    [],
-  );
+  const handleRoleChange = useCallback((roleFilter: UserRole | "all") => {
+    dispatch({ type: "SET_ROLE_FILTER", payload: { roleFilter } });
+  }, []);
 
   const handleActiveChange = useCallback(
     (activeFilter: "all" | "active" | "inactive") => {
@@ -79,13 +79,13 @@ function UsersList() {
     setShowFormModal(true);
   }, []);
 
-  const handleEdit = useCallback((id: string) => {
+  const handleEdit = useCallback((id: number) => {
     setEditingUser(id);
     setShowFormModal(true);
   }, []);
 
   const handleToggleActive = useCallback(
-    (id: string) => {
+    (id: number) => {
       const user = state.users.find((u) => u.id === id);
       if (!user) return;
 
@@ -97,12 +97,23 @@ function UsersList() {
         description: `¿Estás seguro de ${actionText} a "${user.username}"?`,
         button: {
           title: willActivate ? "Sí, activar" : "Sí, desactivar",
-          onClick: () => {
-            dispatch({ type: "TOGGLE_USER_ACTIVE", payload: { id } });
-            sileo.success({
-              title: willActivate ? "Usuario activado" : "Usuario desactivado",
-              description: `El usuario "${user.username}" fue ${actionText} correctamente.`,
+          onClick: async () => {
+            const ok = await updateUser(dispatch, id, {
+              isActive: !user.isActive,
             });
+            if (ok) {
+              sileo.success({
+                title: willActivate
+                  ? "Usuario activado"
+                  : "Usuario desactivado",
+                description: `El usuario "${user.username}" fue ${actionText} correctamente.`,
+              });
+            } else {
+              sileo.error({
+                title: "Error",
+                description: `No se pudo ${actionText} al usuario "${user.username}".`,
+              });
+            }
           },
         },
         duration: 8000,
@@ -118,7 +129,7 @@ function UsersList() {
       let ok: boolean;
       if (isCreate) {
         ok = await createUser(dispatch, data);
-      } else if (editingUser) {
+      } else if (editingUser !== null) {
         ok = await updateUser(dispatch, editingUser, data);
       } else {
         return;
@@ -132,6 +143,13 @@ function UsersList() {
             isCreate ? "creado" : "actualizado"
           } correctamente.`,
         });
+      } else {
+        sileo.error({
+          title: "Error",
+          description: `No se pudo ${
+            isCreate ? "crear" : "actualizar"
+          } el usuario.`,
+        });
       }
     },
     [editingUser],
@@ -143,9 +161,10 @@ function UsersList() {
   }, []);
 
   /* ── Derive editing user object ── */
-  const editingUserObj = editingUser
-    ? (state.users.find((u) => u.id === editingUser) ?? null)
-    : null;
+  const editingUserObj =
+    editingUser !== null
+      ? (state.users.find((u) => u.id === editingUser) ?? null)
+      : null;
 
   /* ── Loading ── */
   if (state.loading) {

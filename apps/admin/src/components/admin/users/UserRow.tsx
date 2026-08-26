@@ -1,23 +1,20 @@
 "use client";
 
-import { useCallback, useState } from "react";
-
 import type { UserRowProps } from "@/types/adminUsers";
+
+const ROLE_LABELS: Record<string, string> = {
+  SUPER_ADMIN: "Super Admin",
+  REVIEWER: "Reviewer",
+};
 
 /**
  * UserRow — fila individual de la tabla de usuarios administrativos.
  *
- * Muestra username, password (enmascarado con toggle), rol y estado activo.
- * Incluye acciones para editar y activar/desactivar al usuario.
+ * Muestra username, rol y estado activo. La contraseña nunca se muestra
+ * (la API no la devuelve). Incluye acciones para editar y activar/desactivar.
  */
 function UserRow({ user, onEdit, onToggleActive }: UserRowProps) {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleTogglePassword = useCallback(() => {
-    setShowPassword((prev) => !prev);
-  }, []);
-
-  const roleLabel = user.role === "admin" ? "Admin" : "Reviewer";
+  const roleLabel = ROLE_LABELS[user.role] ?? user.role;
 
   return (
     <tr className="border-b border-outline-variant/20 last:border-b-0 hover:bg-surface-container-high/50 transition-colors">
@@ -28,32 +25,11 @@ function UserRow({ user, onEdit, onToggleActive }: UserRowProps) {
         </span>
       </td>
 
-      {/* Password (masked with toggle) */}
-      <td className="py-3 px-4">
-        <div className="flex items-center gap-2">
-          <span className="text-body-md text-on-surface-variant font-mono">
-            {showPassword ? user.password : "•".repeat(12)}
-          </span>
-          <button
-            type="button"
-            onClick={handleTogglePassword}
-            className="text-outline hover:text-primary transition-colors cursor-pointer shrink-0"
-            aria-label={
-              showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
-            }
-          >
-            <span className="material-symbols-outlined text-lg">
-              {showPassword ? "visibility_off" : "visibility"}
-            </span>
-          </button>
-        </div>
-      </td>
-
       {/* Role */}
       <td className="py-3 px-4">
         <span
           className={`inline-block px-3 py-1 rounded-full text-label-sm font-semibold ${
-            user.role === "admin"
+            user.role === "SUPER_ADMIN"
               ? "bg-tertiary/15 text-tertiary"
               : "bg-primary/15 text-primary"
           }`}

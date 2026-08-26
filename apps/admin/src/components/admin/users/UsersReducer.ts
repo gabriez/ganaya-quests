@@ -2,12 +2,13 @@
  * UsersReducer — state management for the Users admin page.
  *
  * Page-local state via useReducer. Handles loading, filtering by role and
- * active status, text search, and pagination. Follows the same pattern
- * as MissionsReducer.
+ * active status, text search, and pagination. API calls are delegated to
+ * apiAdminGanaya; the reducer only manages local UI state.
  */
 
 import type { Dispatch } from "react";
 
+import { apiAdminGanaya } from "@/libs/apiAdminGanaya";
 import type {
   AdminUser,
   AdminUserFormData,
@@ -16,7 +17,6 @@ import type {
   UsersAction,
   UsersState,
 } from "@/types/adminUsers";
-import { MOCK_USERS } from "./mockData";
 
 /* ── Constants ── */
 
@@ -213,57 +213,48 @@ export function getCurrentPageItems(
   return filtered.slice(start, start + PAGE_SIZE);
 }
 
-/* ── Helpers ── */
+/* ── Action dispatchers ── */
 
-let nextId = 11;
-
-/** Generate a sequential ID for new users */
-export function generateUserId(): string {
-  return String(nextId++);
-}
-
-/* ── Action dispatchers (simulated async) ── */
-
-/** Load mock users on mount */
+/** Load users from the API */
 export async function loadUsers(dispatch: Dispatch<UsersAction>) {
-  // Simulate network delay
-  await new Promise((r) => setTimeout(r, 300));
-  dispatch({ type: "SET_USERS", payload: { users: MOCK_USERS } });
+  const result = await apiAdminGanaya.getUsers();
+  if (result.status && result.data) {
+    const apiTotalPages = result.meta?.totalPages ?? 1;
+    dispatch({
+      type: "SET_USERS",
+      payload: { users: result.data, totalPages: apiTotalPages },
+    });
+  } else {
+    dispatch({
+      type: "SET_USERS",
+      payload: { users: [], totalPages: 1 },
+    });
+  }
 }
 
-/** Create a new user from form data */
+/** Create a new user via API */
 export async function createUser(
   dispatch: Dispatch<UsersAction>,
   data: AdminUserFormData,
 ): Promise<boolean> {
-  const newUser: AdminUser = {
-    id: generateUserId(),
-    username: data.username,
-    password: data.password,
-    role: data.role,
-    isActive: data.isActive,
-    createdAt: new Date().toISOString(),
-  };
-
-  dispatch({ type: "CREATE_USER", payload: { user: newUser } });
-  return true;
+  const result = await apiAdminGanaya.createUser(data);
+  if (result.status && result.data) {
+    dispatch({ type: "CREATE_USER", payload: { user: result.data } });
+    return true;
+  }
+  return false;
 }
 
-/** Update an existing user */
+/** Update an existing user via API */
 export async function updateUser(
   dispatch: Dispatch<UsersAction>,
-  id: string,
-  data: AdminUserFormData,
+  id: number,
+  data: Partial<AdminUserFormData>,
 ): Promise<boolean> {
-  const updatedUser: AdminUser = {
-    id,
-    username: data.username,
-    password: data.password,
-    role: data.role,
-    isActive: data.isActive,
-    createdAt: new Date().toISOString(),
-  };
-
-  dispatch({ type: "UPDATE_USER", payload: { user: updatedUser } });
-  return true;
+  const result = await apiAdminGanaya.updateUser(id, data);
+  if (result.status && result.data) {
+    dispatch({ type: "UPDATE_USER", payload: { user: result.data } });
+    return true;
+  }
+  return false;
 }

@@ -37,9 +37,6 @@ function UsersTable({ users, onEdit, onToggleActive }: UsersTableProps) {
               Usuario
             </th>
             <th className="py-3 px-4 text-left text-label-sm font-semibold text-on-surface-variant">
-              Contraseña
-            </th>
-            <th className="py-3 px-4 text-left text-label-sm font-semibold text-on-surface-variant">
               Rol
             </th>
             <th className="py-3 px-4 text-left text-label-sm font-semibold text-on-surface-variant">

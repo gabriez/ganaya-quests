@@ -8,8 +8,8 @@ import type {
 
 const ROLE_OPTIONS: { value: UserRole | "all"; label: string }[] = [
   { value: "all", label: "Todos los roles" },
-  { value: "admin", label: "Admin" },
-  { value: "reviewer", label: "Reviewer" },
+  { value: "SUPER_ADMIN", label: "Super Admin" },
+  { value: "REVIEWER", label: "Reviewer" },
 ];
 
 const ACTIVE_OPTIONS: { value: UserActiveStatus; label: string }[] = [
@@ -21,7 +21,7 @@ const ACTIVE_OPTIONS: { value: UserActiveStatus; label: string }[] = [
 /**
  * UserFilterTabs — filtros de rol y estado para la tabla de usuarios.
  *
- * Dos grupos de chips tipo pill: uno para filtrar por rol (admin/reviewer/todos),
+ * Dos grupos de chips tipo pill: uno para filtrar por rol (SUPER_ADMIN / REVIEWER / todos),
  * otro para filtrar por estado activo/inactivo. Sigue el mismo patrón que
  * FilterTabs del módulo de misiones.
  */
