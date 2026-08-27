@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useReducer, useState } from "react";
+import { sileo } from "sileo";
 
 import type { AdminMission } from "@shared/types";
 
@@ -12,10 +13,10 @@ import type { FilterValue } from "@/types/missions/FilterTabs";
 import { FilterTabs } from "./FilterTabs";
 import {
   activateMission,
+  applyFilters,
   cancelMission,
   createMission,
   deleteMission,
-  getCurrentPageItems,
   initialState,
   loadMissions,
   missionsReducer,
@@ -44,18 +45,13 @@ function MissionsList() {
   );
   const [showFormModal, setShowFormModal] = useState(false);
 
-  /* ── Load missions on mount ── */
+  /* ── Load missions on mount / page change ── */
   useEffect(() => {
-    loadMissions(dispatch);
-  }, []);
+    loadMissions(dispatch, state.page);
+  }, [state.page]);
 
-  /* ── Filtered + paginated items ── */
-  const pageMissions = getCurrentPageItems(
-    state.missions,
-    state.filter,
-    state.search,
-    state.page,
-  );
+  /* ── Filtered items ── */
+  const pageMissions = applyFilters(state.missions, state.filter, state.search);
 
   /* ── Handlers ── */
 
@@ -112,11 +108,17 @@ function MissionsList() {
   );
 
   const handleActivate = useCallback(async (id: string) => {
-    const confirmed = window.confirm(
-      "¿Activar misión? El contenido quedará bloqueado.",
-    );
-    if (!confirmed) return;
-    await activateMission(dispatch, id);
+    sileo.action({
+      title: "¿Activar misión?",
+      description: "Si activas la misión el contenido estará bloqueado",
+      button: {
+        onClick: async () => {
+          await activateMission(dispatch, id);
+          sileo.clear();
+        },
+        title: "Activar",
+      },
+    });
   }, []);
 
   const handleCancel = useCallback(async (id: string) => {

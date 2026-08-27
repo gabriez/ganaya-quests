@@ -65,7 +65,7 @@ export const MobileDrawer = ({ open, onClose }: MobileDrawerProps) => {
       <aside
         ref={drawerRef}
         className={
-          "fixed top-0 left-0 z-45 h-dvh w-72 glass-card-strong pt-20 pb-6 grid grid-cols-1 grid-rows-[auto_1fr_auto_auto] transition-transform duration-300 md:hidden " +
+          "fixed top-0 left-0 z-45 h-dvh w-72 bg-surface-container pt-20 pb-6 grid grid-cols-1 grid-rows-[auto_1fr_auto_auto] transition-transform duration-300 md:hidden " +
           (open ? "translate-x-0" : "-translate-x-full")
         }
       >

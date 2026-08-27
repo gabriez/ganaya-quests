@@ -51,12 +51,8 @@ function MissionFields({ formik, readOnly = false }: MissionFieldsProps) {
   const handleCoverUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    // handle images upload as multiform-part data
-    reader.onload = (_event) => {
-      onChange("coverImage", "/placeholder.jpeg");
-    };
-    reader.readAsDataURL(file);
+    onChange("coverImage", URL.createObjectURL(file));
+    onChange("image", file);
   };
 
   /* ── Read-only mode: fields as labels + "Bloqueado" badge ── */
@@ -218,8 +214,8 @@ function MissionFields({ formik, readOnly = false }: MissionFieldsProps) {
           <div className="relative rounded-lg overflow-hidden border border-outline-variant/30">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <Image
-              width={100}
-              height={100}
+              width={500}
+              height={500}
               src={mission.coverImage}
               alt="Cover preview"
               className="w-full h-auto"
@@ -228,6 +224,7 @@ function MissionFields({ formik, readOnly = false }: MissionFieldsProps) {
               type="button"
               onClick={() => {
                 onChange("coverImage", undefined);
+                onChange("image", undefined);
                 if (fileInputRef.current) fileInputRef.current.value = "";
               }}
               className="absolute top-2 right-2 p-1.5 bg-surface-container/80 backdrop-blur-sm rounded-lg text-error hover:text-error/80 transition-colors"
